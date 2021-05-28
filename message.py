@@ -79,7 +79,7 @@ message_x = (w - max_width) / 2
 message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2
 
 
-draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="left")
+draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
 print(reflowed + "\n" + message + "\n")
 
