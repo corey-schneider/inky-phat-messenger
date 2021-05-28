@@ -7,7 +7,7 @@ display"""
 import sys
 from PIL import Image, ImageFont, ImageDraw  # pylint: disable=import-error
 from font_fredoka_one import FredokaOne  # pylint: disable=import-error
-from inky import InkyPHAT  # pylint: disable=import-error
+from inky.auto import auto  # pylint: disable=import-error
 
 
 def print_text(text):
@@ -15,7 +15,7 @@ def print_text(text):
     Args:
         text: String that is displayed on the Inky pHAT
     """
-    inky_display = InkyPHAT("black")
+    inky_display = auto()
     inky_display.set_border(inky_display.WHITE)
     img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
     draw = ImageDraw.Draw(img)
@@ -29,8 +29,4 @@ def print_text(text):
     inky_display.show()
 
 
-if __name__ == "__main__":
-    try:
-        print_text(str(sys.argv[1]))
-    except IndexError:
-        print_text("No Message")
+print_text(str(sys.argv[1]))
