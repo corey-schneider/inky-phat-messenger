@@ -53,7 +53,7 @@ font = ImageFont.truetype(FredokaOne, font_size)
 # pixels padding right. And define max width/height
 padding = 10
 max_width = w - padding
-max_height = h - padding - font.getsize("ABCD ")[1]
+max_height = h - padding
 below_max_length = False
 
 
