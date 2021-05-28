@@ -1,13 +1,9 @@
 #!/usr/bin/python3
-# Copyright 2020 Harlen Bains
-# linted using pylint
-# formatted using black
-"""This script takes in one agrgument and then displays it on a InkyPhat
-display"""
+
 import sys
-from PIL import Image, ImageFont, ImageDraw  # pylint: disable=import-error
-from font_fredoka_one import FredokaOne  # pylint: disable=import-error
-from inky.auto import auto  # pylint: disable=import-error
+from PIL import Image, ImageFont, ImageDraw
+from font_fredoka_one import FredokaOne
+from inky.auto import auto
 
 
 def print_text(text):
@@ -28,5 +24,10 @@ def print_text(text):
     inky_display.set_image(img)
     inky_display.show()
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--message', '-m', type=str, required=True, help="The message to display on the screen")
+args = parser.parse_args()
 
-print_text(str(sys.argv[1]))
+message = args.message
+
+print_text(message)
