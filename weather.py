@@ -56,9 +56,9 @@ inky_display.set_border(inky_display.BLACK)
 
 # Details to customise your weather display
 
-CITY = "Sheffield"
-COUNTRYCODE = "GB"
-WARNING_TEMP = 25.0
+CITY = "Charlotte"
+COUNTRYCODE = "US"
+WARNING_TEMP = 80.0
 
 
 # Convert a city name and country code to latitude and longitude
@@ -72,7 +72,7 @@ def get_coords(address):
 def get_weather(address):
     coords = get_coords(address)
     weather = {}
-    res = requests.get("https://darksky.net/forecast/{}/uk212/en".format(",".join([str(c) for c in coords])))
+    res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
     if res.status_code == 200:
         soup = BeautifulSoup(res.content, "lxml")
         curr = soup.find_all("span", "currently")
@@ -165,10 +165,10 @@ datetime = time.strftime("%d/%m %H:%M")
 
 draw.text((36, 12), datetime, inky_display.WHITE, font=font)
 
-draw.text((72, 34), "T", inky_display.WHITE, font=font)
-draw.text((92, 34), u"{}°".format(temperature), inky_display.WHITE if temperature < WARNING_TEMP else inky_display.RED, font=font)
+draw.text((72, 34), "Temperature: ", inky_display.WHITE, font=font)
+draw.text((92, 34), u"{}°F".format(temperature), inky_display.WHITE if temperature < WARNING_TEMP else inky_display.RED, font=font)
 
-draw.text((72, 58), "P", inky_display.WHITE, font=font)
+draw.text((72, 58), "Pressure: ", inky_display.WHITE, font=font)
 draw.text((92, 58), "{}".format(pressure), inky_display.WHITE, font=font)
 
 # Draw the current weather icon over the backdrop
