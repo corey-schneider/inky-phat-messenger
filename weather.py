@@ -165,10 +165,10 @@ datetime = time.strftime("%d/%m %H:%M")
 
 draw.text((36, 12), datetime, inky_display.WHITE, font=font)
 
-draw.text((72, 34), "Temperature: ", inky_display.WHITE, font=font)
+draw.text((72, 34), " ", inky_display.WHITE, font=font)
 draw.text((92, 34), u"{}°F".format(temperature), inky_display.WHITE if temperature < WARNING_TEMP else inky_display.RED, font=font)
 
-draw.text((72, 58), "Pressure: ", inky_display.WHITE, font=font)
+draw.text((72, 58), " ", inky_display.WHITE, font=font)
 draw.text((92, 58), "{}".format(pressure), inky_display.WHITE, font=font)
 
 # Draw the current weather icon over the backdrop
