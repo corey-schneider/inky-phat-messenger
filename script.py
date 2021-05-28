@@ -19,7 +19,7 @@ def print_text(text):
     inky_display.set_border(inky_display.WHITE)
     img = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype(FredokaOne, 30)
+    font = ImageFont.truetype(FredokaOne, 18)
     message = text
     width, height = font.getsize(message)
     x_axis = (inky_display.WIDTH / 2) - (width / 2)
