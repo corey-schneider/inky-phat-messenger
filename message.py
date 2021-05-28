@@ -19,7 +19,7 @@ message = args.message
 
 def reflow_quote(quote, width, font):
     words = quote.split(" ")
-    reflowed = '"'
+    reflowed = ''
     line_length = 0
 
     for i in range(len(words)):
@@ -33,7 +33,7 @@ def reflow_quote(quote, width, font):
             line_length = word_length
             reflowed = reflowed[:-1] + "\n  " + word
 
-    reflowed = reflowed.rstrip() + '"'
+    reflowed = reflowed.rstrip()
 
     return reflowed
 
