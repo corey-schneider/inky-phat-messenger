@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+import argparse
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
