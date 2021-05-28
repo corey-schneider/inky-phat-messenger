@@ -51,7 +51,7 @@ font = ImageFont.truetype(FredokaOne, font_size)
 # The amount of padding around the quote. Note that
 # a value of 30 means 15 pixels padding left and 15
 # pixels padding right. And define max width/height
-padding = 30
+padding = 12
 max_width = w - padding
 max_height = h - padding - font.getsize("ABCD ")[1]
 below_max_length = False
