@@ -31,7 +31,7 @@ def reflow_quote(quote, width, font):
             reflowed += word
         else:
             line_length = word_length
-            reflowed = reflowed[:-1] + "\n  " + word
+            reflowed = reflowed[:-1] + "\n" + word
 
     reflowed = reflowed.rstrip()
 
