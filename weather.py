@@ -181,7 +181,4 @@ else:
 # Display the weather data on Inky pHAT
 inky_display.set_image(img)
 
-try:
-    inky_display.show()
-except RuntimeError:
-    pass
+inky_display.show()
