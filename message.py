@@ -146,7 +146,6 @@ def write_ssid():
     print("SSID not saved! Writing new SSID.")
     tempSSID = open("config/ssid.txt", "w")
     tempSSID.write(str(SSID))
-    storedSSID = tempSSID.readline()
     print("SSID successfully written.")
     tempSSID.close()
 
