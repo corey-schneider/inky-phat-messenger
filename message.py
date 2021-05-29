@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 # Lots of code came from https://github.com/pimoroni/inky/blob/master/examples/what/quotes-what.py
 
+import glob
+import os
 import sys
 import argparse
 import time
-import requests
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
@@ -13,6 +14,14 @@ try:
     from bs4 import BeautifulSoup
 except ImportError:
     exit("This script requires the bs4 module\nInstall with: sudo pip install beautifulsoup4==4.6.3")
+
+try:
+    import requests
+except ImportError:
+    exit("This script requires the requests module\nInstall with: sudo pip install requests")
+
+# Get the current path
+PATH = os.path.dirname(__file__)
 
 bottom_frame_info = True    # Displays the temperature, forecast, and date at the bottom of the screen
 
@@ -149,7 +158,7 @@ else:
     print("Warning, no weather information found!")
 
 if bottom_frame_info:
-    draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
+    draw.line((37, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
     draw.line((0, 87, 37, 87), fill=inky_display.BLACK)         # Side line
     draw.line((37, 87, 37, 100), fill=inky_display.BLACK)       # Top line line
     #TODO : add support for 212x104 screens

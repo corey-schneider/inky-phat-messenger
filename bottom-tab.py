@@ -150,7 +150,7 @@ font = ImageFont.truetype(FredokaOne, 22)
 
 bottomFont = ImageFont.truetype(FredokaOne, 16)
 
-draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
+draw.line((37, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
 draw.line((0, 87, 37, 87), fill=inky_display.BLACK)         # Side line
 draw.line((37, 87, 37, 100), fill=inky_display.BLACK)       # Top line line
 # Write text with weather values to the canvas
