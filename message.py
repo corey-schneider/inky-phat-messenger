@@ -91,7 +91,8 @@ message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) /
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
 if bottom_frame_info:
-    draw.line((0, 82, 212, 82))      # Bottom line
+    draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
+    #TODO : add support for 212x104 screens
 
 print(reflowed + "\n" + message + "\n")
 
