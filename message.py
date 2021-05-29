@@ -140,19 +140,22 @@ draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, f
 if os.path.getsize("config/coords.txt") == 0:
     print("Coordinates not found! Writing new coordinates.")
     coord = open("config/coords.txt", "w")
-    coord.write(requests.get("https://ipinfo.io/loc"))
-    print("Coordinates successfully written. ("+coord.readline()+")")
+    coord.write(str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0])
+    print("Coordinates successfully written.")
     coord.close()
-else:
-    coords = open("config/coords.txt", "r")
-    print("Location found in coords.txt is "+coords.readline())
+
+coord = open("config/coords.txt", "r")
+coords = coord.readline()
+coord.close()
+print("Location found in coords.txt is "+coords)
 
 # Query Dark Sky (https://darksky.net/) to scrape current weather data
 def get_weather():
     weather = {}
     #coords = requests.get("https://ipinfo.io/loc")
-    res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
-    coords.close()
+    #res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
+    res = requests.get("https://darksky.net/forecast/{}/us12/en".format(coords))
+    
     if res.status_code == 200:
         soup = BeautifulSoup(res.content, "lxml")
         curr = soup.find_all("span", "currently")
