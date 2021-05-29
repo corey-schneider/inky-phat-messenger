@@ -82,7 +82,7 @@ while not below_max_length:
 
 # x- and y-coordinates for the top left of the message
 message_x = (w - max_width) / 2
-message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2
+message_y = ((h - max_height) + (max_height - p_h)) / 2
 
 
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
