@@ -159,6 +159,7 @@ draw.text((28, 102), u"{}°F".format(temperature), inky_display.BLACK, font=bott
 # Draw the current weather icon over the backdrop
 if weather_icon is not None:
     img.paste(icons[weather_icon], (10, 102), masks[weather_icon])
+    print("selected icon is "+str(weather_icon))
 
 else:
     draw.text((10, 102), "?", inky_display.BLACK, font=font)
