@@ -18,7 +18,9 @@
 - Download the necessary files through `curl https://get.pimoroni.com/inky | bash`
   - _Note, you may need to enable SPI and I2C. To do this, run `sudo raspi-config`, scroll to Interface Options, and enable them. Reboot when done_
 - Run `sudo apt-get update` and `sudo apt-get upgrade`
-_. . . to be continued . . ._
+- 
+- _. . . to be continued . . ._
+- 
 - _something something_ `python3 message.py -m "hello, this is a test message"`
 - Create a new email. Modify [config/email.txt](config/email.txt) to include this new receiving email
 
