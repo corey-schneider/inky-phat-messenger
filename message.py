@@ -13,12 +13,12 @@ args = parser.parse_args()
 
 message = args.message
 
-# This function will take a quote as a string, a width to fit
+# This function will take a message as a string, a width to fit
 # it into, and a font (one that's been loaded) and then reflow
-# that quote with newlines to fit into the space required.
+# that message with newlines to fit into the space required.
 
-def reflow_quote(quote, width, font):
-    words = quote.split(" ")
+def reflow_message(msg, width, font):
+    words = msg.split(" ")
     reflowed = ''
     line_length = 0
 
@@ -48,7 +48,7 @@ h = inky_display.HEIGHT
 font_size = 20
 font = ImageFont.truetype(FredokaOne, font_size)
 
-# The amount of padding around the quote. Note that
+# The amount of padding around the message. Note that
 # a value of 30 means 15 pixels padding left and 15
 # pixels padding right. And define max width/height
 padding = 5
@@ -61,20 +61,26 @@ below_max_length = False
 img = Image.new("P", (w, h))
 draw = ImageDraw.Draw(img)
 
+i = 0
 
 while not below_max_length:
 
-    reflowed = reflow_quote(message, max_width, font)
-    p_w, p_h = font.getsize(reflowed)       # Width and height of quote
+    reflowed = reflow_message(message, max_width, font)
+    p_w, p_h = font.getsize(reflowed)       # Width and height of message
     p_h = p_h * (reflowed.count("\n") + 1)  # Multiply through by number of lines
 
     if p_h < max_height:
-        below_max_length = True             # The quote fits! Break out of the loop.
+        below_max_length = True             # The message fits! Break out of the loop.
+
+    # cheap hax. i don't know python
+    if i > 10:
+        sys.exit("Your message is too long.")
 
     else:
+        i + 1
         continue
 
-# x- and y-coordinates for the top left of the quote
+# x- and y-coordinates for the top left of the message
 message_x = (w - max_width) / 2
 message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2
 
