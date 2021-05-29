@@ -77,7 +77,7 @@ while not below_max_length:
         sys.exit("Your message is too long.")
 
     else:
-        i + 1
+        i += 1
         print("new iteration; "+str(i))
         continue
 
