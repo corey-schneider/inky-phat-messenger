@@ -61,8 +61,8 @@ below_max_length = False
 img = Image.new("P", (w, h))
 draw = ImageDraw.Draw(img)
 
-i = 0
 
+i = 0
 while not below_max_length:
 
     reflowed = reflow_message(message, max_width, font)
@@ -72,13 +72,12 @@ while not below_max_length:
     if p_h < max_height:
         below_max_length = True             # The message fits! Break out of the loop.
 
-    # cheap hax. i don't know python
-    if i > 10:
+    # cheap hax
+    if i > 1:
         sys.exit("Your message is too long.")
 
     else:
         i += 1
-        print("new iteration; "+str(i))
         continue
 
 # x- and y-coordinates for the top left of the message
