@@ -102,7 +102,6 @@ draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, f
 def get_weather():
     weather = {}
     coords = requests.get("https://ipinfo.io/loc")
-    #res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
     res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
     if res.status_code == 200:
         soup = BeautifulSoup(res.content, "lxml")
@@ -114,6 +113,10 @@ def get_weather():
         return weather
     else:
         return weather
+
+# Dictionaries to store our icons and icon masks in
+icons = {}
+masks = {}
 
 weather = get_weather()
 # This maps the weather summary from Dark Sky
@@ -147,6 +150,8 @@ else:
 
 if bottom_frame_info:
     draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
+    draw.line((0, 87, 37, 87), fill=inky_display.BLACK)         # Side line
+    draw.line((37, 87, 37, 100), fill=inky_display.BLACK)       # Top line line
     #TODO : add support for 212x104 screens
 
     # Date
@@ -154,9 +159,15 @@ if bottom_frame_info:
     draw.text((180, 102), datetime, inky_display.BLACK, font=bottomFont, align="right")
 
     # Temperature (in Fahrenheit)
+    draw.text((40, 103), u"{}°F".format(temperature), inky_display.BLACK, font=bottomFont, align="left")
 
-    # Current forecast (updated whenever the script is run - do a cron job hourly)
+    # Current forecast icon (updated whenever the script is run - do a cron job hourly)
+if weather_icon is not None:
+    img.paste(icons[weather_icon], (0, 89), masks[weather_icon])
+    print("selected icon is "+str(weather_icon))
 
+else:
+    draw.text((10, 90), "?", inky_display.BLACK, font=font)
 
 print(reflowed + "\n" + message + "\n")
 
