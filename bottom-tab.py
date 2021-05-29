@@ -149,16 +149,18 @@ font = ImageFont.truetype(FredokaOne, 22)
 
 
 bottomFont = ImageFont.truetype(FredokaOne, 16)
+
+draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
 # Write text with weather values to the canvas
 datetime = time.strftime("%b %d") # appears as "May 29" or "Jan 1"
 draw.text((180, 102), datetime, inky_display.BLACK, font=bottomFont, align="right")
 
-draw.text((125, 102), u"{}°F".format(temperature), inky_display.BLACK, font=bottomFont, align="center")
+draw.text((40, 102), u"{}°F".format(temperature), inky_display.BLACK, font=bottomFont, align="left")
 
 
 # Draw the current weather icon over the backdrop
 if weather_icon is not None:
-    img.paste(icons[weather_icon], (0, 79), masks[weather_icon])
+    img.paste(icons[weather_icon], (0, 87), masks[weather_icon])
     print("selected icon is "+str(weather_icon))
 
 else:
