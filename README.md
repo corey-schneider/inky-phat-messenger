@@ -33,5 +33,5 @@ _. . . to be continued . . ._
    [Dark Sky]: <https://darksky.net/>
 
 ## Donate
-![0xbb5f5d978acbde2ec79736cc5398768a35665d42](resources/eth_donate)
+![0xbb5f5d978acbde2ec79736cc5398768a35665d42](resources/eth_donate.png)
 Ethereum: 0xbb5f5d978acbde2ec79736cc5398768a35665d42
