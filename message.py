@@ -134,11 +134,25 @@ message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) /
 
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
+# The purpose of this is to decrease the requests to the ipinfo.io API
+# because it is not necessary to send dozens or hundreds of requests
+# per day - this project will rarely be moved
+if os.path.getsize("config/coords.txt") == 0:
+    print("Coordinates not found! Writing new coordinates.")
+    coord = open("config/coords.txt", "w")
+    coord.write(requests.get("https://ipinfo.io/loc"))
+    print("Coordinates successfully written. ("+coord.readline()+")")
+    coord.close()
+else:
+    coords = open("config/coords.txt", "r")
+    print("Location found in coords.txt is "+coords.readline())
+
 # Query Dark Sky (https://darksky.net/) to scrape current weather data
 def get_weather():
     weather = {}
-    coords = requests.get("https://ipinfo.io/loc")
+    #coords = requests.get("https://ipinfo.io/loc")
     res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
+    coords.close()
     if res.status_code == 200:
         soup = BeautifulSoup(res.content, "lxml")
         curr = soup.find_all("span", "currently")
