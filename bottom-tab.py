@@ -153,16 +153,16 @@ bottomFont = ImageFont.truetype(FredokaOne, 16)
 datetime = time.strftime("%b %d") # appears as "May 29" or "Jan 1"
 draw.text((180, 102), datetime, inky_display.BLACK, font=bottomFont, align="right")
 
-draw.text((28, 102), u"{}°F".format(temperature), inky_display.BLACK, font=bottomFont)
+draw.text((125, 102), u"{}°F".format(temperature), inky_display.BLACK, font=bottomFont, align="center")
 
 
 # Draw the current weather icon over the backdrop
 if weather_icon is not None:
-    img.paste(icons[weather_icon], (10, 102), masks[weather_icon])
+    img.paste(icons[weather_icon], (0, 79), masks[weather_icon])
     print("selected icon is "+str(weather_icon))
 
 else:
-    draw.text((10, 102), "?", inky_display.BLACK, font=font)
+    draw.text((10, 90), "?", inky_display.BLACK, font=font)
 
 # Display the weather data on Inky pHAT
 inky_display.set_image(img)

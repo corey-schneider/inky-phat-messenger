@@ -9,6 +9,11 @@ from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
 
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    exit("This script requires the bs4 module\nInstall with: sudo pip install beautifulsoup4==4.6.3")
+
 bottom_frame_info = True    # Displays the temperature, forecast, and date at the bottom of the screen
 
 parser = argparse.ArgumentParser()
