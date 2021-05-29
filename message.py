@@ -78,6 +78,7 @@ while not below_max_length:
 
     else:
         i + 1
+        print("new iteration; "+i)
         continue
 
 # x- and y-coordinates for the top left of the message
