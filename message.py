@@ -22,6 +22,7 @@ except ImportError:
 
 # Get the current path
 PATH = os.path.dirname(__file__)
+SSID = os.popen("sudo iwgetid -r").read().partition('\n')[0] # print SSID with no new line
 
 bottom_frame_info = True    # Displays the temperature, forecast, and date at the bottom of the screen
 
@@ -134,20 +135,50 @@ message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) /
 
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
+def write_coords():
+    print("Coordinates not found! Writing new coordinates.")
+    tempCoord = open("config/coords.txt", "w")
+    tempCoord.write(str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0])
+    print("Coordinates successfully written.")
+    tempCoord.close()
+
+def write_ssid():
+    print("SSID not saved! Writing new SSID.")
+    tempSSID = open("config/ssid.txt", "w")
+    tempSSID.write(str(SSID))
+    storedSSID = tempSSID.readline()
+    print("SSID successfully written.")
+    tempSSID.close()
+
 # The purpose of this is to decrease the requests to the ipinfo.io API
 # because it is not necessary to send dozens or hundreds of requests
 # per day - this project will rarely be moved
 if os.path.getsize("config/coords.txt") == 0:
-    print("Coordinates not found! Writing new coordinates.")
-    coord = open("config/coords.txt", "w")
-    coord.write(str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0])
-    print("Coordinates successfully written.")
-    coord.close()
+    write_coords()
 
-coord = open("config/coords.txt", "r")
-coords = coord.readline()
-coord.close()
-print("Location found in coords.txt is "+coords)
+if os.path.getsize("config/ssid.txt") == 0:
+    write_ssid()
+
+tempCoord = open("config/coords.txt", "r")
+coords = tempCoord.readline()
+tempCoord.close()
+
+tempSSID = open("config/ssid.txt", "r")
+storedSSID = tempSSID.readline()
+tempSSID.close()
+
+print("Location found in config/coords.txt is "+coords)
+print("SSID found in config/ssid.txt is "+storedSSID)
+
+
+if storedSSID != SSID: # SSIDs don't match; box has moved, weather data must be changed
+    print("SSIDs don't match. Changing weather location...")
+
+    open("config/coords.txt", "w").close() #erase saved coords
+    write_coords()
+
+    open("config/ssid.txt", "w").close() #erase saved ssid
+    write_ssid()
 
 # Query Dark Sky (https://darksky.net/) to scrape current weather data
 def get_weather():
