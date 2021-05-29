@@ -4,6 +4,7 @@
 import sys
 import argparse
 import time
+import requests
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
@@ -91,6 +92,53 @@ message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) /
 
 
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
+
+# Query Dark Sky (https://darksky.net/) to scrape current weather data
+def get_weather():
+    weather = {}
+    coords = requests.get("https://ipinfo.io/loc")
+    #res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
+    res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
+    if res.status_code == 200:
+        soup = BeautifulSoup(res.content, "lxml")
+        curr = soup.find_all("span", "currently")
+        weather["summary"] = curr[0].img["alt"].split()[0]
+        weather["temperature"] = int(curr[0].find("span", "summary").text.split()[0][:-1])
+        press = soup.find_all("div", "pressure")
+        weather["pressure"] = int(press[0].find("span", "num").text)
+        return weather
+    else:
+        return weather
+
+weather = get_weather()
+# This maps the weather summary from Dark Sky
+# to the appropriate weather icons
+icon_map = {
+    "snow": ["snow", "sleet"],
+    "rain": ["rain"],
+    "cloud": ["fog", "cloudy", "partly-cloudy-day", "partly-cloudy-night"],
+    "sun": ["clear-day", "clear-night"],
+    "storm": [],
+    "wind": ["wind"]
+}
+
+# Placeholder variables
+pressure = 0
+temperature = 0
+weather_icon = None
+
+if weather:
+    temperature = weather["temperature"]
+    pressure = weather["pressure"]
+    summary = weather["summary"]
+
+    for icon in icon_map:
+        if summary in icon_map[icon]:
+            weather_icon = icon
+            break
+
+else:
+    print("Warning, no weather information found!")
 
 if bottom_frame_info:
     draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
