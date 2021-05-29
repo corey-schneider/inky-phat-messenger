@@ -51,7 +51,7 @@ font = ImageFont.truetype(FredokaOne, font_size)
 # The amount of padding around the quote. Note that
 # a value of 30 means 15 pixels padding left and 15
 # pixels padding right. And define max width/height
-padding = 10
+padding = 5
 max_width = w - padding
 max_height = h - padding
 below_max_length = False
@@ -65,11 +65,11 @@ draw = ImageDraw.Draw(img)
 while not below_max_length:
 
     reflowed = reflow_quote(message, max_width, font)
-    p_w, p_h = font.getsize(reflowed)  # Width and height of quote
-    p_h = p_h * (reflowed.count("\n") + 1)   # Multiply through by number of lines
+    p_w, p_h = font.getsize(reflowed)       # Width and height of quote
+    p_h = p_h * (reflowed.count("\n") + 1)  # Multiply through by number of lines
 
     if p_h < max_height:
-        below_max_length = True              # The quote fits! Break out of the loop.
+        below_max_length = True             # The quote fits! Break out of the loop.
 
     else:
         continue
@@ -86,14 +86,3 @@ print(reflowed + "\n" + message + "\n")
 # Display the completed canvas on Inky wHAT
 inky_display.set_image(img)
 inky_display.show()
-
-# def print_text(message):
-#     width, height = font.getsize(message)
-#     x_axis = (w / 2) - (width / 2)
-#     y_axis = (h / 2) - (height / 2)
-#     draw.text((x_axis, y_axis), message, inky_display.BLACK, font)
-#     inky_display.set_image(img)
-#     inky_display.show()
-
-
-# print_text(message)
