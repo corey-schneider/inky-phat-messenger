@@ -50,6 +50,7 @@ h = inky_display.HEIGHT
 # Font stuff
 font_size = 20
 font = ImageFont.truetype(FredokaOne, font_size)
+bottomFont = ImageFont.truetype(FredokaOne, 16)
 
 # The amount of padding around the message. Note that
 # a value of 30 means 15 pixels padding left and 15
@@ -94,8 +95,15 @@ draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, f
 if bottom_frame_info:
     draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
     #TODO : add support for 212x104 screens
+
+    # Date
     datetime = time.strftime("%b %d") # appears as "May 29" or "Jan 1"
-    draw.text((112, 245), datetime, inky_display.BLACK, font=font, align="right")
+    draw.text((180, 102), datetime, inky_display.BLACK, font=bottomFont, align="right")
+
+    # Temperature (in Fahrenheit)
+
+    # Current forecast (updated whenever the script is run - do a cron job hourly)
+
 
 print(reflowed + "\n" + message + "\n")
 
