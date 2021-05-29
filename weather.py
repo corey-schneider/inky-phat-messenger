@@ -70,8 +70,10 @@ def get_coords(address):
 
 # Query Dark Sky (https://darksky.net/) to scrape current weather data
 def get_weather(address):
-    coords = get_coords(address)
+    #coords = get_coords(address)
     weather = {}
+    coords = requests.get("https://ipinfo.io/loc")
+    #res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
     res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
     if res.status_code == 200:
         soup = BeautifulSoup(res.content, "lxml")
