@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Lots of code came from https://github.com/pimoroni/inky/blob/master/examples/what/quotes-what.py
 
 import sys
 import argparse
@@ -6,6 +7,7 @@ from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
 
+bottom_frame_info = True    # Displays the temperature, forecast, and date at the bottom of the screen
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--message', '-m', type=str, required=True, help="The message to display on the screen")
@@ -82,13 +84,17 @@ while not below_max_length:
 
 # x- and y-coordinates for the top left of the message
 message_x = (w - max_width) / 2
-message_y = ((h - max_height) + (max_height - p_h)) / 2
+message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
+#message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
 
 
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
+if bottom_frame_info:
+    draw.line((0, 82, 212, 82))      # Bottom line
+
 print(reflowed + "\n" + message + "\n")
 
-# Display the completed canvas on Inky wHAT
+# Display the completed canvas on Inky pHAT
 inky_display.set_image(img)
 inky_display.show()
