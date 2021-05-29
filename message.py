@@ -3,6 +3,7 @@
 
 import sys
 import argparse
+import time
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
@@ -93,6 +94,8 @@ draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, f
 if bottom_frame_info:
     draw.line((0, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
     #TODO : add support for 212x104 screens
+    datetime = time.strftime("%b %d") # appears as "May 29" or "Jan 1"
+    draw.text((112, 245), datetime, inky_display.BLACK, font=font, align="right")
 
 print(reflowed + "\n" + message + "\n")
 
