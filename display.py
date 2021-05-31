@@ -6,6 +6,7 @@ import os
 import sys
 import argparse
 import time
+import json
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
@@ -129,8 +130,8 @@ while not below_max_length:
 
 # x- and y-coordinates for the top left of the message
 message_x = (w - max_width) / 2
-#message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
-message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
+message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
+#message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
 
 
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
@@ -158,6 +159,9 @@ if os.path.getsize("config/coords.txt") == 0:
 if os.path.getsize("config/ssid.txt") == 0:
     write_ssid()
 
+if os.path.getsize("../api.txt") == 0: #TODO change this on release
+    print("You are missing the Weather API key. Please add it in config/api.txt")
+
 tempCoord = open("config/coords.txt", "r")
 coords = tempCoord.readline()
 tempCoord.close()
@@ -166,8 +170,14 @@ tempSSID = open("config/ssid.txt", "r")
 storedSSID = tempSSID.readline()
 tempSSID.close()
 
+temp_api_key = open("../api.txt", "r")
+api_key = temp_api_key.readline()
+temp_api_key.close()
+
+
 print("Coordinates found in config/coords.txt is "+coords)
 print("SSID found in config/ssid.txt is "+storedSSID)
+print("Weather API key found in config/api.txt is "+api_key)
 
 
 if storedSSID != SSID: # SSIDs don't match; box has moved, weather data must be changed
@@ -179,34 +189,35 @@ if storedSSID != SSID: # SSIDs don't match; box has moved, weather data must be 
     open("config/ssid.txt", "w").close() #erase saved ssid
     write_ssid()
 
-# Query Dark Sky (https://darksky.net/) to scrape current weather data
+# Query OpenWeatherMap to scrape current weather data
 def get_weather():
     weather = {}
-    #coords = requests.get("https://ipinfo.io/loc")
-    #res = requests.get("https://darksky.net/forecast/{}/us12/en".format(",".join([str(c) for c in coords])))
-    res = requests.get("https://darksky.net/forecast/{}/us12/en".format(coords))
-    
+    lat = coords.split(",")[0]
+    lon = coords.split(",")[1]
+    res = requests.get("http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}&units=imperial".format(lat, lon, api_key))
     if res.status_code == 200:
-        soup = BeautifulSoup(res.content, "lxml")
-        curr = soup.find_all("span", "currently")
-        weather["summary"] = curr[0].img["alt"].split()[0]
-        weather["temperature"] = int(curr[0].find("span", "summary").text.split()[0][:-1])
-        press = soup.find_all("div", "pressure")
-        weather["pressure"] = int(press[0].find("span", "num").text)
+        data = json.loads(res.text)
+        weather["summary"] = data["weather"][0]["main"]
+        weather["temperature"] = data["main"]["temp"] #current temp
+        weather["temp-hi"] = data["main"]["temp_max"]
+        weather["temp-lo"] = data["main"]["temp_min"]
+        weather["pressure"] = data["main"]["pressure"] #i"ll keep it even though we"re not using it
         return weather
     else:
         return weather
 
 weather = get_weather()
-# This maps the weather summary from Dark Sky
-# to the appropriate weather icons
+
+# This maps the weather summary to weather icons
+# https://openweathermap.org/weather-conditions - Main
 icon_map = {
-    "snow": ["snow", "sleet"],
-    "rain": ["rain"],
-    "cloud": ["fog", "cloudy", "partly-cloudy-day", "partly-cloudy-night"],
-    "sun": ["clear-day", "clear-night"],
-    "storm": [],
-    "wind": ["wind"]
+    "snow": ["Snow"],
+    "rain": ["Drizzle", "Rain"],
+    "cloud": ["Clouds"],
+    "sun": ["Clear"],
+    "storm": ["Thunderstorm", "Tornado"],
+    "wind": ["Squall"],
+    "atmosphere": ["Mist", "Smoke", "Haze", "Dust", "Fog", "Sand", "Ash", "Tornado"]
 }
 
 # Placeholder variables
@@ -215,9 +226,11 @@ temperature = 0
 weather_icon = None
 
 if weather:
-    temperature = weather["temperature"]
-    pressure = weather["pressure"]
     summary = weather["summary"]
+    temperature = weather["temperature"]
+    temp_hi = weather["temp-hi"]
+    temp_lo = weather["temp-lo"]
+    pressure = weather["pressure"]
 
     for icon in icon_map:
         if summary in icon_map[icon]:
@@ -238,7 +251,7 @@ if bottom_frame_info:
     draw.text((180, 102), datetime, inky_display.BLACK, font=bottomFont, align="right")
 
     # Temperature (in Fahrenheit)
-    draw.text((40, 103), u"{}°F".format(temperature), inky_display.BLACK, font=bottomFont, align="left")
+    draw.text((40, 103), u"{}°F".format(int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
 
     # Current forecast icon (updated whenever the script is run - do a cron job hourly)
 if weather_icon is not None:
