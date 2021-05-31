@@ -8,6 +8,7 @@
 - Temperature (in fahrenheit)
 - Date
 - Can send a message up to 4 lines long
+- Makes one call to the IpInfo API per SSID
   
 ## Setup
 - Download [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/operating-systems/)

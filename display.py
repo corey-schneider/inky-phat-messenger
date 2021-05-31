@@ -129,8 +129,8 @@ while not below_max_length:
 
 # x- and y-coordinates for the top left of the message
 message_x = (w - max_width) / 2
-message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
-#message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
+#message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
+message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
 
 
 draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
@@ -166,7 +166,7 @@ tempSSID = open("config/ssid.txt", "r")
 storedSSID = tempSSID.readline()
 tempSSID.close()
 
-print("Location found in config/coords.txt is "+coords)
+print("Coordinates found in config/coords.txt is "+coords)
 print("SSID found in config/ssid.txt is "+storedSSID)
 
 
