@@ -204,6 +204,7 @@ def get_weather():
         weather["pressure"] = data["main"]["pressure"] #i"ll keep it even though we"re not using it
         return weather
     else:
+        print("Error while retrieving weather - status code "+res.status_code)
         return weather
 
 weather = get_weather()
@@ -240,6 +241,14 @@ if weather:
 else:
     print("Warning, no weather information found!")
 
+    # Current forecast icon (updated whenever the script is run - do a cron job hourly)
+if weather_icon is not None:
+    img.paste(icons[weather_icon], (0, 89), masks[weather_icon])
+    print("selected icon is "+str(weather_icon))
+
+else:
+    draw.text((10, 90), "?", inky_display.BLACK, font=font)
+
 if bottom_frame_info:
     draw.line((37, 100, 250, 100), fill=inky_display.BLACK)      # Bottom line for 250x122 screens
     draw.line((0, 87, 37, 87), fill=inky_display.BLACK)         # Side line
@@ -252,14 +261,6 @@ if bottom_frame_info:
 
     # Temperature (in Fahrenheit)
     draw.text((40, 103), u"{}°F".format(int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
-
-    # Current forecast icon (updated whenever the script is run - do a cron job hourly)
-if weather_icon is not None:
-    img.paste(icons[weather_icon], (0, 89), masks[weather_icon])
-    print("selected icon is "+str(weather_icon))
-
-else:
-    draw.text((10, 90), "?", inky_display.BLACK, font=font)
 
 print(reflowed + "\n" + message + "\n")
 
