@@ -163,15 +163,15 @@ if os.path.getsize("../api.txt") == 0: #TODO change this on release
     print("You are missing the Weather API key. Please add it in config/api.txt")
 
 tempCoord = open("config/coords.txt", "r")
-coords = tempCoord.readline()
+coords = tempCoord.readline().strip()
 tempCoord.close()
 
 tempSSID = open("config/ssid.txt", "r")
-storedSSID = tempSSID.readline()
+storedSSID = tempSSID.readline().strip()
 tempSSID.close()
 
 temp_api_key = open("../api.txt", "r")
-api_key = temp_api_key.readline()
+api_key = temp_api_key.readline().strip()
 temp_api_key.close()
 
 
@@ -204,7 +204,7 @@ def get_weather():
         weather["pressure"] = data["main"]["pressure"] #i"ll keep it even though we"re not using it
         return weather
     else:
-        print("Error while retrieving weather - status code "+res.status_code)
+        print("Error while retrieving weather - status code "+str(res.status_code))
         return weather
 
 weather = get_weather()

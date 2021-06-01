@@ -17,7 +17,8 @@
   - Modify [wpa_supplicant.conf](wpa_supplicant.conf) to include your wifi credentials
 - SSH into the Raspberry Pi
 - Download the necessary files through `curl https://get.pimoroni.com/inky | bash`
-  - _Note, you may need to enable SPI and I2C. To do this, run `sudo raspi-config`, scroll to Interface Options, and enable them. Reboot when done_
+- Enable SPI and I2C. To do this, run `sudo raspi-config`, scroll to Interface Options, and enable them.
+  - While in `raspi-config`, change the time zone (unless you live in the UK). Select `Localisation Options` > `Timezone`.
 - Run `sudo apt-get update` and `sudo apt-get upgrade`
 - Create a new email. Modify [config/email.txt](config/email.txt) to include this new receiving email
 - 
