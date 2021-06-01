@@ -135,9 +135,9 @@ message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) /
 #message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
 
 
-# draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
-wi = draw.textsize(reflowed)
-draw.multiline_text(((w-wi)/2, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
+draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
+#wi = draw.textsize(reflowed)
+#draw.multiline_text(((w-wi)/2, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
 def write_coords():
     print("Coordinates not found! Writing new coordinates.")
