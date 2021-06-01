@@ -197,14 +197,21 @@ def get_weather():
     weather = {}
     lat = coords.split(",")[0]
     lon = coords.split(",")[1]
-    res = requests.get("http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}&units=imperial".format(lat, lon, api_key))
+    res = requests.get("http://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&appid={}&units=imperial".format(lat, lon, api_key))
     if res.status_code == 200:
         data = json.loads(res.text)
+        '''
         weather["summary"] = data["weather"][0]["main"]
         weather["temperature"] = data["main"]["temp"] #current temp
         weather["temp-hi"] = data["main"]["temp_max"]
         weather["temp-lo"] = data["main"]["temp_min"]
         weather["pressure"] = data["main"]["pressure"] #i"ll keep it even though we"re not using it
+        '''
+        weather["summary"] = data["daily"][0]["weather"][0]["main"]
+        weather["temperature"] = data["current"]["temp"]
+        weather["temp-hi"] = data["daily"][0]["temp"]["max"]
+        weather["temp-lo"] = data["daily"][0]["temp"]["min"]
+        weather["pressure"] = data["daily"][0]["pressure"] #i"ll keep it even though we"re not using it
         return weather
     else:
         print("Error while retrieving weather - status code "+str(res.status_code))
