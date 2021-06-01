@@ -271,7 +271,7 @@ if bottom_frame_info:
 
     # Temperature (in Fahrenheit)
     #draw.text((40, 103), u"{}°F".format(int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
-    draw.text((40, 103), u"{}°F / {}°F \t{}°F".format(int(temp_lo), int(temp_hi), int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
+    draw.text((40, 103), u"{}°/{}°F \t[{}°F]".format(int(temp_lo), int(temp_hi), int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
 
 print(reflowed + "\n" + message + "\n")
 
