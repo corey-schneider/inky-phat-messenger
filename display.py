@@ -38,7 +38,7 @@ message = args.message
 # This function will take a message as a string, a width to fit
 # it into, and a font (one that's been loaded) and then reflow
 # that message with newlines to fit into the space required.
-
+'''
 def reflow_message(msg, width, font):
     words = msg.split(" ")
     reflowed = ''
@@ -58,7 +58,7 @@ def reflow_message(msg, width, font):
     reflowed = reflowed.rstrip()
 
     return reflowed
-
+'''
 
 inky_display = auto()
 inky_display.set_border(inky_display.WHITE)
@@ -111,7 +111,7 @@ for icon in glob.glob(os.path.join(PATH, "resources/icon-*.png")):
     icon_image = Image.open(icon)
     icons[icon_name] = icon_image
     masks[icon_name] = create_mask(icon_image)
-
+'''
 i = 0
 while not below_max_length:
 
@@ -129,26 +129,26 @@ while not below_max_length:
     else:
         i += 1
         continue
-
+'''
 # x- and y-coordinates for the top left of the message
-message_x = (w - max_width) / 2
-message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
+# message_x = (w - max_width) / 2
+# message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
 #message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
 
 
-draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
+# draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
-'''paragraph = textwrap.wrap(message, width=24) #25 cuts off
+paragraph = textwrap.wrap(message, width=24) #25 cuts off
 
 current_h = 10
 pad = 0
 for line in paragraph:
     w_size, h_size = draw.textsize(line, font=font)
-    draw.text(((w - w_size)/2, current_h), line, font=font)
+    draw.text(((w - w_size)/2, current_h), line, fill=inky_display.BLACK, font=font)
     current_h += h_size + pad
 
 if len(paragraph) >= 4:
-    sys.exit("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")'''
+    sys.exit("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
 
 def write_coords():
     print("Coordinates not found! Writing new coordinates.")
@@ -284,10 +284,10 @@ if bottom_frame_info:
     #draw.text((40, 103), u"{}°F".format(int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
     draw.text((40, 103), u"{}°/{}° \t[{}°F]".format(int(temp_hi), int(temp_lo), int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
 
-print(reflowed + "\n" + message + "\n")
-'''for txtline in paragraph:
+#print(reflowed + "\n" + message + "\n")
+for txtline in paragraph:
     print(txtline)
-print("\n\n"+message+"\n")'''
+print("\n\n"+message+"\n")
 
 # Display the completed canvas on Inky pHAT
 inky_display.set_image(img)
