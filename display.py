@@ -135,8 +135,8 @@ message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) /
 
 
 # draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
-wi, he = draw.textsize(reflowed)
-draw.multiline_text(((w-wi)/2, (h-he)/2), reflowed, fill=inky_display.BLACK, font=font, align="center")
+wi = draw.textsize(reflowed)
+draw.multiline_text(((w-wi)/2, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
 
 def write_coords():
     print("Coordinates not found! Writing new coordinates.")
@@ -215,12 +215,15 @@ weather = get_weather()
 # https://openweathermap.org/weather-conditions - Main
 icon_map = {
     "snow": ["Snow"],
-    "rain": ["Drizzle", "Rain"],
+    "rain": ["Rain"],
     "cloud": ["Clouds"],
     "sun": ["Clear"],
     "storm": ["Thunderstorm", "Tornado"],
     "wind": ["Squall"],
-    "atmosphere": ["Mist", "Smoke", "Haze", "Dust", "Fog", "Sand", "Ash", "Tornado"]
+    "atmosphere": ["Smoke", "Haze", "Dust", "Sand", "Ash"],
+    "fog": ["Fog"],
+    "mist": ["Mist", "Drizzle"],
+    "tornado": ["Tornado"]
 }
 
 # Placeholder variables
@@ -243,7 +246,7 @@ if weather:
 else:
     print("Warning, no weather information found!")
 
-    # Current forecast icon (updated whenever the script is run - do a cron job hourly)
+    # Current forecast icon
 if weather_icon is not None:
     img.paste(icons[weather_icon], (0, 89), masks[weather_icon])
     print("selected icon is "+str(weather_icon))
