@@ -219,7 +219,7 @@ icon_map = {
     "rain": ["Rain"],
     "cloud": ["Clouds"],
     "sun": ["Clear"],
-    "storm": ["Thunderstorm", "Tornado"],
+    "storm": ["Thunderstorm"],
     "wind": ["Squall"],
     "atmosphere": ["Smoke", "Haze", "Dust", "Sand", "Ash"],
     "fog": ["Fog"],
@@ -230,6 +230,8 @@ icon_map = {
 # Placeholder variables
 pressure = 0
 temperature = 0
+temp_hi = 0
+temp_lo = 0
 weather_icon = None
 
 if weather:
@@ -263,11 +265,13 @@ if bottom_frame_info:
 
     # Date
     datetime = time.strftime("%b %d") # appears as "May 29" or "Jan 1"
-    # more documentation on anchors can be found https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html
-    draw.text((210, 102), datetime, inky_display.BLACK, font=bottomFont, anchor="rs")
+    # More documentation on anchors can be found https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html
+    # Note: anchors do not work for some reason, even on Pillow 8.2.0
+    draw.text((190, 102), datetime, inky_display.BLACK, font=bottomFont, anchor="rs")
 
     # Temperature (in Fahrenheit)
-    draw.text((40, 103), u"{}°F".format(int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
+    #draw.text((40, 103), u"{}°F".format(int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
+    draw.text((40, 103), u"{}°F / {}°F \t{}°F".format(int(temp_lo), int(temp_hi), int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
 
 print(reflowed + "\n" + message + "\n")
 
