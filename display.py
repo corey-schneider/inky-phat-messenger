@@ -29,6 +29,7 @@ bottom_frame_info = True    # Displays the temperature, forecast, and date at th
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--message', '-m', type=str, required=True, help="The message to display on the screen")
+#TODO parser.add_argument('--nobottom', '-nb', required=False, help="Include if you wish to use the program without the bottom frame")
 args = parser.parse_args()
 
 message = args.message
@@ -182,7 +183,7 @@ print("SSID found in config/ssid.txt is "+storedSSID)
 print("Weather API key found in config/api.txt is "+api_key)
 
 
-if storedSSID != SSID: # SSIDs don't match; box has moved, weather data must be changed
+if storedSSID != SSID: # SSIDs don't match; raspberry pi has moved - weather data must be changed
     print("SSIDs don't match. Changing weather location...")
 
     open("config/coords.txt", "w").close() #erase saved coords
@@ -262,7 +263,8 @@ if bottom_frame_info:
 
     # Date
     datetime = time.strftime("%b %d") # appears as "May 29" or "Jan 1"
-    draw.text((180, 102), datetime, inky_display.BLACK, font=bottomFont, align="right")
+    # more documentation on anchors can be found https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html
+    draw.text((210, 102), datetime, inky_display.BLACK, font=bottomFont, anchor="rs")
 
     # Temperature (in Fahrenheit)
     draw.text((40, 103), u"{}°F".format(int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
