@@ -8,6 +8,7 @@ import argparse
 import time
 import json
 import textwrap
+import logging
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
@@ -21,6 +22,10 @@ try:
     import requests
 except ImportError:
     exit("This script requires the requests module\nInstall with: sudo pip install requests")
+
+logger = logging.getLogger('Display')
+logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', encoding='utf-8', level=logging.DEBUG) #log.txt: time [display]: message
+logging.getLogger().addHandler(logging.StreamHandler()) #print to console
 
 # Get the current path
 PATH = os.path.dirname(__file__)
@@ -148,20 +153,21 @@ for line in paragraph:
     current_h += h_size + pad
 
 if len(paragraph) >= 4:
-    sys.exit("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
+    logger.error("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
+    sys.exit(0)
 
 def write_coords():
-    print("Coordinates not found! Writing new coordinates.")
+    logger.info("Coordinates not found! Writing new coordinates.")
     tempCoord = open("config/coords.txt", "w")
     tempCoord.write(str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0])
-    print("Coordinates successfully written.")
+    logger.info("Coordinates successfully written.")
     tempCoord.close()
 
 def write_ssid():
-    print("SSID not saved! Writing new SSID.")
+    logger.info("SSID not saved! Writing new SSID.")
     tempSSID = open("config/ssid.txt", "w")
     tempSSID.write(str(SSID))
-    print("SSID successfully written.")
+    logger.info("SSID successfully written.")
     tempSSID.close()
 
 # The purpose of this is to decrease the requests to the ipinfo.io API
@@ -184,18 +190,18 @@ tempSSID = open("config/ssid.txt", "r")
 storedSSID = tempSSID.readline().strip()
 tempSSID.close()
 
-temp_api_key = open("../api.txt", "r")
+temp_api_key = open("../api.txt", "r") #TODO change this on release
 api_key = temp_api_key.readline().strip()
 temp_api_key.close()
 
 
-print("Coordinates found in config/coords.txt is "+coords)
-print("SSID found in config/ssid.txt is "+storedSSID)
-print("Weather API key found in config/api.txt is "+api_key)
+logger.info("Coordinates found in config/coords.txt is "+coords)
+logger.info("SSID found in config/ssid.txt is "+storedSSID)
+logger.info("Weather API key found in config/api.txt is "+api_key)
 
 
 if storedSSID != SSID: # SSIDs don't match; raspberry pi has moved - weather data must be changed
-    print("SSIDs don't match. Changing weather location...")
+    logger.info("SSIDs don't match. Changing weather location...")
 
     open("config/coords.txt", "w").close() #erase saved coords
     write_coords()
@@ -218,7 +224,7 @@ def get_weather():
         weather["pressure"] = data["daily"][0]["pressure"] #i"ll keep it even though we"re not using it
         return weather
     else:
-        print("Error while retrieving weather - status code "+str(res.status_code))
+        logger.error("Error while retrieving weather - status code "+str(res.status_code))
         return weather
 
 weather = get_weather()
@@ -258,12 +264,12 @@ if weather:
             break
 
 else:
-    print("Warning, no weather information found!")
+    logger.warning("Warning, no weather information found!")
 
     # Current forecast icon
 if weather_icon is not None:
     img.paste(icons[weather_icon], (0, 89), masks[weather_icon])
-    print("selected icon is "+str(weather_icon))
+    logger.debug("selected weather icon is "+str(weather_icon))
 
 else:
     draw.text((10, 90), "?", inky_display.BLACK, font=font)

@@ -35,7 +35,6 @@ try:
 except: # TODO except what?
     logger.error("Invalid username or password.")
     sys.exit(0)
-    #exit("Invalid username or password.")
 
 
 print("Scanning email "+USERNAME+" ...")
@@ -54,16 +53,13 @@ while True:
         for num in id_list:
             result, data = mail.uid('fetch', num, '(RFC822)') # fetch the email headers and body (RFC822) for the given ID
         if result == 'OK':
-            #raw_email = data[0][1] # big glob of shit
             email_message_raw = email.message_from_bytes(data[0][1]) # better formatting
             email_from = str(make_header(decode_header(email_message_raw['From'])))
             email_date = str(make_header(decode_header(email_message_raw['Date'])))
             print("From: "+email_from+" on "+email_date)
-            #print(email_message_raw)
 
             message = email.message_from_string(str(email_message_raw))
             print("Message: \""+message.get_payload()+"\"")
 
             latest_email_uid = id_list[-1]
-            #print("latest_email_uid: "+str(latest_email_uid)+", id_list: "+str(id_list)+", id_list[-1]: "+str(id_list[-1]))
         time.sleep(REFRESH_INTERVAL)
