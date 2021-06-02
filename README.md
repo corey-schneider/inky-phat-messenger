@@ -37,11 +37,22 @@
   - Sign in, click your name in the top right, click `My API keys` and copy the Key to [config/config.json](config/config.json)
 - _. . . to be continued . . ._
 - Run `EmailHandler` on startup
+- Cron job for `display.py`; necessary for the date and weather to update
 - _something something_ `python3 message.py -m "hello, this is a test message"`
+
+
+## TODO
+- check config.json for email, api_key, etc. if exist, continue
+- while searching emails, if wifi goes out, do something to prevent the program from crashing
+- while searching emails, if email password changes, put that on the display (maybe? how to determine this?)
+- what if an email is spam?
+  - Fix: only allow messages from "@txt.att.net", "@tmomail.net", "@messaging.sprintpcs.com", "@vtext.com", "@vzwpix.com", "@vmobl.com"
+    - Problem with this fix: only allows for messaging from text message - not email. Potential fix: maybe add an "allowed emails" in config?
 
 
 ## Troubleshooting
 - If you see an error saying `File "/home/pi/.local/lib/python3.7/site-packages/PIL/Image.py", line 109, in <module>` or something about `from . import _imaging as core`, type `sudo rm -rf /home/pi/.local/lib/python3.7/site-packages/PIL/`. If the error persists, notice the directory - you may see `python3.8` or similar - change the rm -rf command to the version seen in your error.
+
 
 
 ## Credits
