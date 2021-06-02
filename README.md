@@ -3,29 +3,40 @@
 ##### _Send messages to family or loved ones_
 [**image of working device**]
 ## Features
-- Send an email or text message to update the message
+- Send an email / text message to update the message
 - Weather status icon
-- Temperature (in fahrenheit)
-- Date
+- Temperature (in Fahrenheit) from OpenWeatherMap API  _(R.I.P. DarkSky)_
+- Date in the bottom right corner
 - Can send a message up to 4 lines long
-- Makes one call to the IpInfo API per SSID
+- Makes one call to the IpInfo API (unless the device is moved to a different network)
+- Logging of errors saved in `log.txt` for easy debugging though sftp if the device suddenly stops working
+  - Log will include:
+    - Incorrect / invalid email credentials
+    - Incorrect / invalid API key
+    - Missing email or password in `config.json`
+    - Missing API key in `config.json`
+    - Missing `config.json`
 
 
 ## Setup
 - Download [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/operating-systems/)
-- Flash image to SD card with [Raspberry Pi imager](https://www.raspberrypi.org/software/)
-- Download [wpa_supplicant.conf](wpa_supplicant.conf) and [ssh](ssh)
+- Flash image to SD card with [Raspberry Pi imager](https://www.raspberrypi.org/software/). While this is happening...
+  - Download [wpa_supplicant.conf](wpa_supplicant.conf) and [ssh](ssh)
   - Modify [wpa_supplicant.conf](wpa_supplicant.conf) to include your wifi credentials
-- SSH into the Raspberry Pi
+- Safely remove and reinsert the microSD card you just flashed
+- Put YOUR modified version of `wpa_supplicant.conf` and `ssh` directly onto the microSD card
+- Insert microSD, plug in the Pi, and SSH into it
 - Download the necessary files through `curl https://get.pimoroni.com/inky | bash`
 - Enable SPI and I2C. To do this, run `sudo raspi-config`, scroll to Interface Options, and enable them.
-  - While in `raspi-config`, change the time zone (unless you live in the UK). Select `Localisation Options` > `Timezone`.
-- Run `sudo apt-get update` and `sudo apt-get upgrade`
+  - While in `raspi-config`, change the time zone _(unless you live in the UK)_. Select `Localisation Options` > `Timezone`.
+- Run `sudo apt-get update` and `sudo apt-get upgrade` - _This will take a while_
 - Run `python3 -m pip install --upgrade pip` and `python3 -m pip install --upgrade Pillow`
-- Create a new email. Modify [config/email.txt](config/email.txt) to include this new receiving email
-- 
+- Create a **new** Gmail email. **Do NOT use an existing Gmail account for this.** Modify [config/config.json](config/config.json) to include this new receiving email and password.
+  - After creating the Gmail, you must turn ON `Allow Less Secure Apps`. [Click here for a guide.](https://devanswers.co/allow-less-secure-apps-access-gmail-account/)
+- Create a new (free) account with [OpenWeatherMap.org](https://home.openweathermap.org/users/sign_up).
+  - Sign in, click your name in the top right, click `My API keys` and copy the Key to [config/config.json](config/config.json)
 - _. . . to be continued . . ._
-- cron job
+- Run `EmailHandler` on startup
 - _something something_ `python3 message.py -m "hello, this is a test message"`
 
 
