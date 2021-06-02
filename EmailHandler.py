@@ -7,12 +7,13 @@ import logging
 import sys
 from email.header import Header, decode_header, make_header
 
+config_location = "../config.json" #TODO change this on release
 logger = logging.getLogger('EmailHandler')
 logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', encoding='utf-8', level=logging.DEBUG) #log.txt: time [emailhandler]: message
 logging.getLogger().addHandler(logging.StreamHandler()) #print to console
 
 try:
-    with open("../config.json") as json_data_file: #TODO change this on release
+    with open(config_location) as json_data_file:
         config = json.load(json_data_file)
 except IOError:
     logger.error("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
@@ -59,7 +60,15 @@ while True:
             print("From: "+email_from+" on "+email_date)
 
             message = email.message_from_string(str(email_message_raw))
-            print("Message: \""+message.get_payload()+"\"")
-
+            print("Message: \""+message.get_payload().strip()+"\"")
+            
+            if config["message"] != message.get_payload().strip(): # if the pi is restarted and the message is the same, don't rewrite it
+                config["message"] = message.get_payload().strip()
+                with open(config_location, "w") as f:
+                    json.dump(config, f)
+                    logger.info("Successfully wrote new message to config.json")
+            else:
+                logger.info("Messages were the same; not rewriting.")
+            
             latest_email_uid = id_list[-1]
         time.sleep(REFRESH_INTERVAL)

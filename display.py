@@ -29,7 +29,7 @@ logging.getLogger().addHandler(logging.StreamHandler()) #print to console
 
 # Get the current path
 PATH = os.path.dirname(__file__)
-SSID = os.popen("sudo iwgetid -r").read().partition('\n')[0] # print SSID with no new line
+SSID = os.popen("sudo iwgetid -r").read().partition('\n')[0] # TODO probably shouldn't use sudo
 
 bottom_frame_info = True    # Displays the temperature, forecast, and date at the bottom of the screen
 
@@ -172,7 +172,7 @@ def write_ssid():
 
 # The purpose of this is to decrease the requests to the ipinfo.io API
 # because it is not necessary to send dozens or hundreds of requests
-# per day - this project will rarely be moved
+# per day - this device will rarely be moved
 if os.path.getsize("config/coords.txt") == 0:
     write_coords()
 
@@ -196,7 +196,7 @@ temp_api_key.close()
 
 
 logger.info("Coordinates found in config/coords.txt is "+coords)
-logger.info("SSID found in config/ssid.txt is "+storedSSID)
+logger.info("SSID found in config/ssid.txt is \""+storedSSID+"\"")
 logger.info("Weather API key found in config/api.txt is "+api_key)
 
 
