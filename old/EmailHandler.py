@@ -7,6 +7,16 @@ import logging
 import sys
 from email.header import Header, decode_header, make_header
 
+'''
+
+    This file pulls in an email and reads it on a 30 second interval. It
+    only works with Verizon SMS being sent to a Gmail account. Due to 
+    the restriction, this code is being kept in the 'old' folder, as 
+    it may be useful in solving someone's similar problem in the future.
+
+'''
+
+
 config_location = "../config.json" #TODO change this on release
 logger = logging.getLogger('EmailHandler')
 logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', encoding='utf-8', level=logging.DEBUG) #log.txt: time [emailhandler]: message
