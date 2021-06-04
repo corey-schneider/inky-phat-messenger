@@ -49,6 +49,7 @@
   - Click `OAuth2` on the left column. Under `SCOPES`, check `bot`. Under `BOT PERMISSIONS`, check `Send Messages`, `Manage Messages`, `Read Message History`
   - Copy the link at the bottom of `SCOPES` - it should end with `&scope=bot` - but don't yet go to it
   - Create a new Discord server and name it whatever you'd like, then visit the link copied in the last step and select the server you've just created
+    - You may want to create a server icon - there is a Raspberry Pi icon that can be found [here](github-images/rpi-logo.png)
 
 
 
