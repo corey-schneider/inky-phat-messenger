@@ -4,7 +4,6 @@
 import glob
 import os
 import sys
-import argparse
 import time
 import json
 import textwrap
@@ -25,7 +24,7 @@ except ImportError:
     exit("This script requires the requests module\nInstall with: sudo pip install requests")
 
 logger = logging.getLogger('Display')
-logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', encoding='utf-8', level=logging.DEBUG) #log.txt: time [display]: message
+logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', level=logging.DEBUG) #log.txt: time [display]: message
 #logging.getLogger().addHandler(logging.StreamHandler()) #print to console
 
 
@@ -38,37 +37,6 @@ coords = str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0]
 
 bottom_frame_info = True    # Displays the temperature, forecast, and date at the bottom of the screen
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--message', '-m', type=str, required=True, help="The message to display on the screen")
-#TODO parser.add_argument('--nobottom', '-nb', required=False, help="Include if you wish to use the program without the bottom frame")
-args = parser.parse_args()
-
-message = args.message
-
-# This function will take a message as a string, a width to fit
-# it into, and a font (one that's been loaded) and then reflow
-# that message with newlines to fit into the space required.
-'''
-def reflow_message(msg, width, font):
-    words = msg.split(" ")
-    reflowed = ''
-    line_length = 0
-
-    for i in range(len(words)):
-        word = words[i] + " "
-        word_length = font.getsize(word)[0]
-        line_length += word_length
-
-        if line_length < width:
-            reflowed += word
-        else:
-            line_length = word_length
-            reflowed = reflowed[:-1] + "\n" + word
-
-    reflowed = reflowed.rstrip()
-
-    return reflowed
-'''
 
 inky_display = auto()
 inky_display.set_border(inky_display.WHITE)
@@ -95,12 +63,6 @@ img = Image.new("P", (w, h))
 draw = ImageDraw.Draw(img)
 
 def create_mask(source, mask=(inky_display.WHITE, inky_display.BLACK, inky_display.RED)):
-    """Create a transparency mask.
-    Takes a paletized source image and converts it into a mask
-    permitting all the colours supported by Inky pHAT (0, 1, 2)
-    or an optional list of allowed colours.
-    :param mask: Optional list of Inky pHAT colours to allow.
-    """
     mask_image = Image.new("1", source.size)
     w, h = source.size
     for x in range(w):
@@ -121,46 +83,8 @@ for icon in glob.glob(os.path.join(PATH, "resources/icon-*.png")):
     icon_image = Image.open(icon)
     icons[icon_name] = icon_image
     masks[icon_name] = create_mask(icon_image)
-'''
-i = 0
-while not below_max_length:
 
-    reflowed = reflow_message(message, max_width, font)
-    p_w, p_h = font.getsize(reflowed)       # Width and height of message
-    p_h = p_h * (reflowed.count("\n") + 1)  # Multiply through by number of lines
-
-    if p_h < max_height:
-        below_max_length = True             # The message fits! Break out of the loop.
-
-    # cheap hax
-    if i > 1:
-        sys.exit("Your message is too long.")
-
-    else:
-        i += 1
-        continue
-'''
-# x- and y-coordinates for the top left of the message
-# message_x = (w - max_width) / 2
-# message_y = ((h - max_height) + (max_height - p_h - font.getsize("ABCD ")[1])) / 2     # pushes text up top
-#message_y = ((h - max_height) + (max_height - p_h)) / 2     # keeps text centered
-
-
-# draw.multiline_text((message_x, message_y), reflowed, fill=inky_display.BLACK, font=font, align="center")
-
-paragraph = textwrap.wrap(message, width=24) #25 cuts off
-
-current_h = 10
-pad = 0
-for line in paragraph:
-    w_size, h_size = draw.textsize(line, font=font)
-    draw.text(((w - w_size)/2, current_h), line, fill=inky_display.BLACK, font=font)
-    current_h += h_size + pad
-
-if len(paragraph) >= 4:
-    logger.error("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
-    sys.exit(0)
-
+# Load our config.json file
 try:
     with open(config_location) as json_data_file:
         config = json.load(json_data_file)
@@ -179,6 +103,7 @@ if config["ssid"] == "" or config["coords"] == "":
         logger.error("Discord token not found in config.json")
         sys.exit("Discord token not found in config.json")
 
+# if there's no weather api key, do not crash - the user just gets no weather
 if config["weather_api_key"] == "":
     logger.error("You are missing the Weather API key. Please add it in config/config.json")
     print("You are missing the Weather API key. Please add it in config/config.json")
@@ -186,7 +111,6 @@ if config["weather_api_key"] == "":
 stored_coords = config["coords"]
 stored_SSID = config["ssid"]
 api_key = config["weather_api_key"]
-
 
 logger.info("Coordinates found in configuration file is "+stored_coords)
 logger.info("SSID found in configuration file is \""+stored_SSID+"\"")
@@ -197,6 +121,26 @@ if stored_SSID != SSID: # SSIDs don't match; raspberry pi has moved - weather da
     logger.info("SSIDs don't match. Changing weather location...")
     config["ssid"] = str(SSID)
     config["coords"] = coords
+
+if config["message"] == "":
+    print("No message stored.")
+    message = "Send your first message via Discord!"
+else:
+    message = config["message"]
+
+paragraph = textwrap.wrap(message, width=24) #25 cuts off
+
+current_h = 10
+pad = 0
+for line in paragraph:
+    w_size, h_size = draw.textsize(line, font=font)
+    draw.text(((w - w_size)/2, current_h), line, fill=inky_display.BLACK, font=font)
+    current_h += h_size + pad
+
+if len(paragraph) >= 4:
+    logger.error("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
+    sys.exit(0)
+
 
 # Query OpenWeatherMap to scrape current weather data
 def get_weather():
