@@ -31,8 +31,8 @@ try:
     TOKEN = config["discord"]["token"]
     ALLOWED_USER = config["discord"]["allowed_user"]
 except (JSONDecodeError, KeyError):
-    logger.error("Email credentials not found in config.json")
-    sys.exit("Email credentials not found in config.json")
+    logger.error("Discord token not found in config.json")
+    sys.exit("Discord token not found in config.json")
 
 @client.event
 async def on_ready():
