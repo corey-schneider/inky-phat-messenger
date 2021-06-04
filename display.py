@@ -9,6 +9,7 @@ import time
 import json
 import textwrap
 import logging
+from json.decoder import JSONDecodeError
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from inky.auto import auto
@@ -25,11 +26,15 @@ except ImportError:
 
 logger = logging.getLogger('Display')
 logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', encoding='utf-8', level=logging.DEBUG) #log.txt: time [display]: message
-logging.getLogger().addHandler(logging.StreamHandler()) #print to console
+#logging.getLogger().addHandler(logging.StreamHandler()) #print to console
+
+
+config_location = "../config.json" #TODO change this on release
 
 # Get the current path
 PATH = os.path.dirname(__file__)
 SSID = os.popen("sudo iwgetid -r").read().partition('\n')[0] # TODO probably shouldn't use sudo
+coords = str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0]
 
 bottom_frame_info = True    # Displays the temperature, forecast, and date at the bottom of the screen
 
@@ -156,64 +161,48 @@ if len(paragraph) >= 4:
     logger.error("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
     sys.exit(0)
 
-def write_coords():
-    logger.info("Coordinates not found! Writing new coordinates.")
-    tempCoord = open("config/coords.txt", "w")
-    tempCoord.write(str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0])
-    logger.info("Coordinates successfully written.")
-    tempCoord.close()
-
-def write_ssid():
-    logger.info("SSID not saved! Writing new SSID.")
-    tempSSID = open("config/ssid.txt", "w")
-    tempSSID.write(str(SSID))
-    logger.info("SSID successfully written.")
-    tempSSID.close()
+try:
+    with open(config_location) as json_data_file:
+        config = json.load(json_data_file)
+except IOError:
+    logger.error("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
+    sys.exit("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
 
 # The purpose of this is to decrease the requests to the ipinfo.io API
 # because it is not necessary to send dozens or hundreds of requests
 # per day - this device will rarely be moved
-if os.path.getsize("config/coords.txt") == 0:
-    write_coords()
+if config["ssid"] == "" or config["coords"] == "":
+    try:
+        config["ssid"] = str(SSID)
+        config["coords"] = str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0]
+    except (JSONDecodeError, KeyError):
+        logger.error("Discord token not found in config.json")
+        sys.exit("Discord token not found in config.json")
 
-if os.path.getsize("config/ssid.txt") == 0:
-    write_ssid()
+if config["weather_api_key"] == "":
+    logger.error("You are missing the Weather API key. Please add it in config/config.json")
+    print("You are missing the Weather API key. Please add it in config/config.json")
 
-if os.path.getsize("../api.txt") == 0: #TODO change this on release
-    print("You are missing the Weather API key. Please add it in config/api.txt")
-
-tempCoord = open("config/coords.txt", "r")
-coords = tempCoord.readline().strip()
-tempCoord.close()
-
-tempSSID = open("config/ssid.txt", "r")
-storedSSID = tempSSID.readline().strip()
-tempSSID.close()
-
-temp_api_key = open("../api.txt", "r") #TODO change this on release
-api_key = temp_api_key.readline().strip()
-temp_api_key.close()
+stored_coords = config["coords"]
+stored_SSID = config["ssid"]
+api_key = config["weather_api_key"]
 
 
-logger.info("Coordinates found in config/coords.txt is "+coords)
-logger.info("SSID found in config/ssid.txt is \""+storedSSID+"\"")
-logger.info("Weather API key found in config/api.txt is "+api_key)
+logger.info("Coordinates found in configuration file is "+stored_coords)
+logger.info("SSID found in configuration file is \""+stored_SSID+"\"")
+logger.info("Weather API key found in configuration file is "+api_key)
 
 
-if storedSSID != SSID: # SSIDs don't match; raspberry pi has moved - weather data must be changed
+if stored_SSID != SSID: # SSIDs don't match; raspberry pi has moved - weather data must be changed
     logger.info("SSIDs don't match. Changing weather location...")
-
-    open("config/coords.txt", "w").close() #erase saved coords
-    write_coords()
-
-    open("config/ssid.txt", "w").close() #erase saved ssid
-    write_ssid()
+    config["ssid"] = str(SSID)
+    config["coords"] = coords
 
 # Query OpenWeatherMap to scrape current weather data
 def get_weather():
     weather = {}
-    lat = coords.split(",")[0]
-    lon = coords.split(",")[1]
+    lat = stored_coords.split(",")[0]
+    lon = stored_coords.split(",")[1]
     res = requests.get("http://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&appid={}&units=imperial".format(lat, lon, api_key))
     if res.status_code == 200:
         data = json.loads(res.text)
