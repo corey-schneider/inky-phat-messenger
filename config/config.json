@@ -1,5 +1,5 @@
 {
-	"api_key": "",
+	"weather_api_key": "",
 	"discord": {
 		"token": "",
 		"allowed_user": ""
