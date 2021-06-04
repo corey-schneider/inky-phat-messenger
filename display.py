@@ -29,7 +29,7 @@ logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(mess
 #logging.getLogger().addHandler(logging.StreamHandler()) #print to console
 
 
-config_location = "../config.json" #TODO change this on release
+config_location = "config/config.json"
 
 # Get the current path
 PATH = os.path.dirname(__file__)

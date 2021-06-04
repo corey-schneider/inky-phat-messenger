@@ -19,7 +19,7 @@ logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(mess
 #logging.getLogger().addHandler(logging.StreamHandler()) #print to console
 logger = logging.getLogger('DiscordBot')
 
-config_location = "../config.json" #TODO change this on release
+config_location = "config/config.json"
 
 try:
     with open(config_location) as json_data_file:

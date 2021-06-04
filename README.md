@@ -34,12 +34,9 @@
   - While in `raspi-config`, change the time zone _(unless you live in the UK)_. Select `Localisation Options` > `Timezone`.
 - Run `sudo apt-get update` and `sudo apt-get upgrade` - _This will take a while_
 - Run `python3 -m pip install --upgrade pip` and `python3 -m pip install --upgrade Pillow` and `python3 -m pip install discord`
+- Run `cd ~` and `git clone https://github.com/corey-schneider/inky-phat-messenger.git` and `cd inky-phat-messenger`
 - Create a new (free) account with [OpenWeatherMap.org](https://home.openweathermap.org/users/sign_up).
   - Sign in, click your name in the top right, click `My API keys` and copy the Key to [config/config.json](config/config.json)
-- _. . . to be continued . . ._
-- Run `DiscordBot.py` on startup
-- Cron job for `display.py`; necessary for the date and weather to update
-- _something something_ `python3 message.py -m "hello, this is a test message"`
 - Create Discord bot:
   - Create a Discord account or sign in to your existing account and head to [https://discord.com/developers/applications](https://discord.com/developers/applications)
   - Click `New Application` in the top right and name it `inky`
@@ -50,17 +47,12 @@
   - Copy the link at the bottom of `SCOPES` - it should end with `&scope=bot` - but don't yet go to it
   - Create a new Discord server and name it whatever you'd like, then visit the link copied in the last step and select the server you've just created
     - You may want to create a server icon - there is a Raspberry Pi icon that can be found [here](github-images/rpi-logo.png)
-
-
-
-## TODO
-- check config.json for email, api_key, etc. if exist, continue
-- while searching emails, if wifi goes out, do something to prevent the program from crashing
-- while searching emails, if email password changes, put that on the display (maybe? how to determine this?)
-- what if an email is spam?
-  - Fix: only allow messages from "@txt.att.net", "@tmomail.net", "@messaging.sprintpcs.com", "@vtext.com", "@vzwpix.com", "@vmobl.com"
-    - Problem with this fix: only allows for messaging from text message - not email. Potential fix: maybe add an "allowed emails" in config?
-
+- After testing to make sure everything is working, we need to make sure `discordbot.py` runs on startup and `display.py` runs every hour to update the weather
+  - Run `crontab -e`. Type `1` if prompted to select an editor
+  - At the bottom of the file, enter these two lines:
+    - `@reboot cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/discordbot.py &` _(Note, the ampersand is intentional)_
+    - `@hourly cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/display.py`
+  - hit `ctrl o`, enter, then `ctrl x`
 
 ## Troubleshooting
 - If you see an error saying `File "/home/pi/.local/lib/python3.7/site-packages/PIL/Image.py", line 109, in <module>` or something about `from . import _imaging as core`...
