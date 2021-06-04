@@ -27,7 +27,7 @@
   - Download [wpa_supplicant.conf](wpa_supplicant.conf) and [ssh](ssh)
   - Modify [wpa_supplicant.conf](wpa_supplicant.conf) to include your wifi credentials
 - Safely remove and reinsert the microSD card you just flashed
-- Put YOUR modified version of `wpa_supplicant.conf` and `ssh` directly onto the microSD card
+- Put YOUR modified version of `wpa_supplicant.conf` and `ssh` directly onto the root directory of the microSD card
 - Insert microSD, plug in the Pi, and SSH into it
 - Download the necessary files through `curl https://get.pimoroni.com/inky | bash`
 - Enable SPI and I2C. To do this, run `sudo raspi-config`, scroll to Interface Options, and enable them.
@@ -50,7 +50,7 @@
 - After testing to make sure everything is working, we need to make sure `discordbot.py` runs on startup and `display.py` runs every hour to update the weather
   - Run `crontab -e`. Type `1` if prompted to select an editor
   - At the bottom of the file, enter these two lines:
-    - `@reboot cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/discordbot.py &` _(Note, the ampersand is intentional)_
+    - `@reboot sleep 30; cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/discordbot.py`
     - `@hourly cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/display.py`
   - hit `ctrl o`, enter, then `ctrl x`
 
