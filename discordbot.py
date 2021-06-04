@@ -56,7 +56,7 @@ async def on_message(message):
                 #logger.info("same messages")
             await message.channel.send("Sent to inky phat: \""+message.content+"\"")
             #print("Rewritten: "+str(display.show_rewritten_message(message.content)))
-            os.system("display.py")
+            os.system("python3 display.py")
     else:
         await message.channel.send('You are not authorized to send a message.')
         logger.info("User does not match. Ignoring message. Expected: \""+ALLOWED_USER+"\", got \""+str(message.author)+"\".")
