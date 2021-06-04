@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# coding: utf-8
 # Lots of code came from https://github.com/pimoroni/inky/blob/master/examples/what/quotes-what.py
 
 import glob
