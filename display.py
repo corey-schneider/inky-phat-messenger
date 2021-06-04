@@ -224,9 +224,14 @@ if bottom_frame_info:
     draw.text((40, 103), u"{}°/{}° \t[{}°F]".format(int(temp_hi), int(temp_lo), int(temperature)), inky_display.BLACK, font=bottomFont, align="left")
 
 #print(reflowed + "\n" + message + "\n")
-for txtline in paragraph:
-    print(txtline)
-print("\n\n"+message+"\n")
+
+def show_rewritten_message(msg):
+    output_str = ""
+    for msg in paragraph:
+        output_str = output_str+"\n"+msg
+    return output_str
+
+print(show_rewritten_message(message)+"\n\n"+message+"\n")
 
 # Display the completed canvas on Inky pHAT
 inky_display.set_image(img)

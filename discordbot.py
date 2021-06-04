@@ -1,3 +1,4 @@
+import display
 import discord
 import json
 from json.decoder import JSONDecodeError
@@ -54,6 +55,7 @@ async def on_message(message):
                 print("Messages were the same; not rewriting.")
                 #logger.info("same messages")
             await message.channel.send("Sent to inky phat: \""+message.content+"\"")
+            print("Rewritten: "+str(display.show_rewritten_message(message.content)))
     else:
         await message.channel.send('You are not authorized to send a message.')
         logger.info("User does not match. Ignoring message. Expected: \""+ALLOWED_USER+"\", got \""+str(message.author)+"\".")
