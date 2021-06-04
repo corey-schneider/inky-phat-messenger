@@ -6,7 +6,7 @@
 
 ## Features
 - Send an ~~email~~ ... ~~text message~~ ... **Discord message** to update the message on the inky phat
-  - _Ran into some trouble with different mail servers having different ways of handling message bodies. The Discord bot is cleaner, more stable, and more practical, and can be accessed on [iOS](https://apps.apple.com/us/app/discord-talk-chat-hang-out/id985746746), [Android](https://play.google.com/store/apps/details?id=com.discord&hl=en_US&gl=US), [Windows, Linux, MacOS, Chrome OS, etc.](https://discord.com/)_
+  - _Ran into some trouble with different mail servers having different ways of handling message bodies. The Discord bot is cleaner, more stable, and more practical as it can be accessed on [iOS](https://apps.apple.com/us/app/discord-talk-chat-hang-out/id985746746), [Android](https://play.google.com/store/apps/details?id=com.discord&hl=en_US&gl=US), [Windows, Linux, MacOS, Chrome OS, etc.](https://discord.com/)_
 - Weather status icon
 - Temperature (in Fahrenheit) from OpenWeatherMap API  <sub><sup>_(RIP DarkSky)_</sup></sub>
 - Date in the bottom right corner
@@ -53,6 +53,38 @@
     - `@reboot sleep 30; cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/discordbot.py`
     - `@hourly cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/display.py`
   - hit `ctrl o`, enter, then `ctrl x`
+
+
+## TODO
+- Clean up README.md
+  - Organize `SETUP` into sections
+- Use PIL to create a mockup image of the display and have the bot send it over Discord
+- Clean up code in `display.py`
+  - Separate code into methods and classes
+    - Weather can be its own class
+  - Integrate `bottom_frame_info` better
+    - If false, move text lower or allow for longer messages
+  - Vertical align text
+  - Remove print alongside logger
+  - Change sys.exit(message) to (0)
+- Fix logger
+  - Should print
+- Add more commands to Discord bot
+  - font size
+  - font style
+  - get IP / location / weather information
+  - enable / disable bottom frame
+  - !help command to show all commands
+- Have error messages routed to Discord bot
+- Set up alerts on Discord bot
+  - Enter the pi holder's Discord handle and alert them when a new message arrives on the inky display
+- Add more weather icons
+  - Hopefully remove the ugly bump too
+  - [Climacons](https://thenounproject.com/adamwhitcroft/collection/climacons/) are really nice!
+- Finer detailed weather
+- Have discord bot be aware of length of message and reject a message that will overflow off the screen
+- `paragraph = textwrap.wrap(message, width=24)` 24 cuts off, may need to lower to 23 - do some testing
+
 
 ## Troubleshooting
 - If you see an error saying `File "/home/pi/.local/lib/python3.7/site-packages/PIL/Image.py", line 109, in <module>` or something about `from . import _imaging as core`...

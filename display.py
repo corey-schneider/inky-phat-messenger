@@ -93,16 +93,20 @@ except IOError:
     logger.error("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
     sys.exit("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
 
+def rewrite_ssid_and_coords():
+    config["ssid"] = str(SSID)
+    config["coords"] = coords
+    with open(config_location, "w") as f:
+        json.dump(config, f)
+        print("Successfully wrote SSID and coords to config.json")
+
 # The purpose of this is to decrease the requests to the ipinfo.io API
 # because it is not necessary to send dozens or hundreds of requests
 # per day - this device will rarely be moved
 if config["ssid"] == "" or config["coords"] == "":
-    try:
-        config["ssid"] = str(SSID)
-        config["coords"] = str(requests.get("https://ipinfo.io/loc").text).partition('\n')[0]
-    except (JSONDecodeError, KeyError):
-        logger.error("Discord token not found in config.json")
-        sys.exit("Discord token not found in config.json")
+    logger.info("SSIDs or coordinates are blank. Writing new ones...")
+    print("SSIDs or coordinates are blank. Writing new ones...")
+    rewrite_ssid_and_coords()
 
 # if there's no weather api key, do not crash - the user just gets no weather
 if config["weather_api_key"] == "":
@@ -120,8 +124,7 @@ logger.info("Weather API key found in configuration file is "+api_key)
 
 if stored_SSID != SSID: # SSIDs don't match; raspberry pi has moved - weather data must be changed
     logger.info("SSIDs don't match. Changing weather location...")
-    config["ssid"] = str(SSID)
-    config["coords"] = coords
+    rewrite_ssid_and_coords()
 
 if config["message"] == "":
     print("No message stored.")
@@ -129,7 +132,7 @@ if config["message"] == "":
 else:
     message = config["message"]
 
-paragraph = textwrap.wrap(message, width=24) #25 cuts off
+paragraph = textwrap.wrap(message, width=23) #25 and 24 cut off
 
 current_h = 10
 pad = 0

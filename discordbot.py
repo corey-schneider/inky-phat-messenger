@@ -54,7 +54,7 @@ async def on_message(message):
             else:
                 print("Messages were the same; not rewriting.")
                 #logger.info("same messages")
-            await message.channel.send("Sent to inky phat: \""+message.content+"\"")
+            await message.channel.send("Sent to inky display: \""+message.content+"\"")
             #print("Rewritten: "+str(display.show_rewritten_message(message.content)))
             os.system("python3 display.py")
     else:
