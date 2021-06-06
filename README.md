@@ -84,6 +84,8 @@
 - Finer detailed weather
 - Have discord bot be aware of length of message and reject a message that will overflow off the screen
 - `paragraph = textwrap.wrap(message, width=24)` 24 cuts off, may need to lower to 23 - do some testing
+- Create method for saving to json
+  - "Send your first message via discord" doesn't save to configuration file
 
 
 ## Troubleshooting

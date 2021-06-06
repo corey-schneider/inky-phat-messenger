@@ -2,7 +2,8 @@
 	"weather_api_key": "",
 	"discord": {
 		"token": "",
-		"allowed_user": ""
+		"allowed_sender": "",
+		"recipient": ""
 	},
 	"ssid": "",
 	"coords": "",
