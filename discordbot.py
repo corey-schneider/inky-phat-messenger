@@ -46,7 +46,7 @@ async def on_message(message):
 		return
 
 	if str(message.author) == ALLOWED_SENDER or ALLOWED_SENDER == "":
-		if message.content.startswith(''):
+		if message.content.startswith('') and not message.content.startswith('!'):
 			if config["message"] != message.content: # if the pi is restarted and the message is the same, don't rewrite it
 				config["message"] = message.content
 				with open(config_location, "w") as f:
@@ -70,6 +70,13 @@ async def on_message(message):
 				await user.send("New message on inky display!")
 			except discord.Forbidden:
 				pass'''
+		elif message.content.startswith('!shutdown'):
+			os.system("sudo shutdown now")
+			await message.channel.send("Shutting down...")
+		elif message.content.startswith('!reboot') or message.content.startswith('!restart'):
+			os.system("sudo reboot")
+			await message.channel.send("Restarting...")
+
 
 		
 
