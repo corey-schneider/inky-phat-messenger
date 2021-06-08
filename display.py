@@ -24,8 +24,8 @@ try:
 except ImportError:
     exit("This script requires the requests module\nInstall with: sudo pip install requests")
 
-logger = logging.getLogger('Display')
-logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', level=logging.DEBUG) #log.txt: time [display]: message
+#logger = logging.getLogger('Display')
+#logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', level=logging.DEBUG) #log.txt: time [display]: message
 #logging.getLogger().addHandler(logging.StreamHandler()) #print to console
 
 
@@ -90,7 +90,7 @@ try:
     with open(config_location) as json_data_file:
         config = json.load(json_data_file)
 except IOError:
-    logger.error("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
+    #logger.error("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
     sys.exit("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
 
 def rewrite_ssid_and_coords():
@@ -107,26 +107,30 @@ if config["flipped"].lower() == "true":
 # because it is not necessary to send dozens or hundreds of requests
 # per day - this device will rarely be moved
 if config["ssid"] == "" or config["coords"] == "":
-    logger.info("SSIDs or coordinates are blank. Writing new ones...")
+    #logger.info("SSIDs or coordinates are blank. Writing new ones...")
     print("SSIDs or coordinates are blank. Writing new ones...")
     rewrite_ssid_and_coords()
 
 # if there's no weather api key, do not crash - the user just gets no weather
 if config["weather_api_key"] == "":
-    logger.error("You are missing the Weather API key. Please add it in config/config.json")
+    #logger.error("You are missing the Weather API key. Please add it in config/config.json")
     print("You are missing the Weather API key. Please add it in config/config.json")
 
 stored_coords = config["coords"]
 stored_SSID = config["ssid"]
 api_key = config["weather_api_key"]
 
-logger.info("Coordinates found in configuration file is "+stored_coords)
-logger.info("SSID found in configuration file is \""+stored_SSID+"\"")
-logger.info("Weather API key found in configuration file is "+api_key)
+#logger.info("Coordinates found in configuration file is "+stored_coords)
+#logger.info("SSID found in configuration file is \""+stored_SSID+"\"")
+#logger.info("Weather API key found in configuration file is "+api_key)
+print("Coordinates found in configuration file is "+stored_coords)
+print("SSID found in configuration file is \""+stored_SSID+"\"")
+print("Weather API key found in configuration file is "+api_key)
 
 
 if stored_SSID != SSID: # SSIDs don't match; raspberry pi has moved - weather data must be changed
-    logger.info("SSIDs don't match. Changing weather location...")
+    #logger.info("SSIDs don't match. Changing weather location...")
+    print("SSIDs don't match. Changing weather location...")
     rewrite_ssid_and_coords()
 
 if config["message"] == "":
@@ -145,8 +149,8 @@ for line in paragraph:
     current_h += h_size + pad
 
 if len(paragraph) >= 4:
-    logger.error("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
-    sys.exit(0)
+    #logger.error("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
+    sys.exit("Your message is too long. Remove the sentence starting with: \""+paragraph[3]+"\"")
 
 
 # Query OpenWeatherMap to scrape current weather data
@@ -164,7 +168,7 @@ def get_weather():
         weather["pressure"] = data["daily"][0]["pressure"] #i"ll keep it even though we"re not using it
         return weather
     else:
-        logger.error("Error while retrieving weather - status code "+str(res.status_code))
+        #logger.error("Error while retrieving weather - status code "+str(res.status_code))
         return weather
 
 weather = get_weather()
@@ -204,12 +208,13 @@ if weather:
             break
 
 else:
-    logger.warning("Warning, no weather information found!")
+    #logger.warning("Warning, no weather information found!")
+    print("Warning, no weather information found!")
 
     # Current forecast icon
 if weather_icon is not None:
     img.paste(icons[weather_icon], (0, 89), masks[weather_icon])
-    logger.debug("selected weather icon is "+str(weather_icon))
+    #logger.debug("selected weather icon is "+str(weather_icon))
 
 else:
     draw.text((10, 90), "?", inky_display.BLACK, font=font)

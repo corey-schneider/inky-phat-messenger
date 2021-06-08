@@ -15,9 +15,9 @@ import os
 
 client = discord.Client()
 
-logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', level=logging.INFO) #log.txt: time [discordbot]: message
+#logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', level=logging.INFO) #log.txt: time [discordbot]: message
 #logging.getLogger().addHandler(logging.StreamHandler()) #print to console
-logger = logging.getLogger('DiscordBot')
+#logger = logging.getLogger('DiscordBot')
 
 config_location = "config/config.json"
 
@@ -25,7 +25,7 @@ try:
 	with open(config_location) as json_data_file:
 		config = json.load(json_data_file)
 except IOError:
-	logger.error("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
+	#logger.error("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
 	sys.exit("Configuration file does not exist in config/config.json. Pull a new one from https://github.com/corey-schneider/inky-phat-messenger/blob/main/config/config.json")
 
 try:
@@ -33,7 +33,7 @@ try:
 	ALLOWED_SENDER = config["discord"]["allowed_sender"]
 	RECIPIENT = config["discord"]["recipient"]
 except (JSONDecodeError, KeyError):
-	logger.error("Discord token not found in config.json")
+	#logger.error("Discord token not found in config.json")
 	sys.exit("Discord token not found in config.json")
 
 @client.event
@@ -59,7 +59,7 @@ async def on_message(message):
 			#print("Rewritten: "+str(display.show_rewritten_message(message.content)))
 			os.system("python3 display.py")
 
-			#user_id = client.fetch_user(client.get_all_members(), name="emma.rosenzweig", discriminator="3691").id
+			#user_id = client.fetch_user(client.get_all_members(), name="test", discriminator="123").id
 			
 			'''
 			not yet working
@@ -75,7 +75,7 @@ async def on_message(message):
 
 	else:
 		await message.channel.send('You are not authorized to send a command.')
-		logger.info("User does not match. Ignoring command. Expected: \""+ALLOWED_SENDER+"\", got \""+str(message.author)+"\".")
+		#logger.info("User does not match. Ignoring command. Expected: \""+ALLOWED_SENDER+"\", got \""+str(message.author)+"\".")
 		print("User does not match. Ignoring command. Expected: \""+ALLOWED_SENDER+"\", got \""+str(message.author)+"\".")
 
 client.run(TOKEN)
