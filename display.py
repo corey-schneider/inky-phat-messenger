@@ -100,6 +100,9 @@ def rewrite_ssid_and_coords():
         json.dump(config, f)
         print("Successfully wrote SSID and coords to config.json")
 
+if config["flipped"].lower() == "true":
+    inky_display.h_flip = True
+    inky_display.v_flip = True
 # The purpose of this is to decrease the requests to the ipinfo.io API
 # because it is not necessary to send dozens or hundreds of requests
 # per day - this device will rarely be moved

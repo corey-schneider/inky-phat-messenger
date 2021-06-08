@@ -5,6 +5,7 @@
 		"allowed_sender": "",
 		"recipient": ""
 	},
+	"flipped": "true",
 	"ssid": "",
 	"coords": "",
 	"message": ""

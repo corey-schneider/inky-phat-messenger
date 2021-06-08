@@ -6,6 +6,7 @@
 		"recipient": "example.recipient#1234"	###### 18-digit user ID. https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-
 							###### NOTE we only want the RECIPIENT'S user ID - NOT a server ID or message ID.
 	},
+	"flipped": "true",	###### flip the display 180. options are `true` or `false`
 	"ssid": "",	###### leave blank
 	"coords": "",	###### leave blank
 	"message": ""	###### leave blank
