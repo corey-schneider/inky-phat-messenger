@@ -3,6 +3,7 @@
 ##### _Send messages to family or loved ones_
 
 <img src="github-images/display.jpg" alt="Image of working display" width="504px" height="275px">
+
 _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl)_
 
 
