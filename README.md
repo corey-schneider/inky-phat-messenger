@@ -22,6 +22,10 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
     - Missing email or password in `config.json`
     - Missing API key in `config.json`
     - Missing `config.json`
+- Discord commands:
+  - `!reboot` - Restarts the Raspberry Pi
+  - `!shutdown` - Turns off the Raspberry Pi
+  - `any text here` - Sends a message. Usage: `Hello!` will show `Hello!` on the display
 
 
 ## Setup
