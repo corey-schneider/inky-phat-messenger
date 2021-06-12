@@ -1,7 +1,8 @@
 # Inky Messenger 
 
 ##### _Send messages to family or loved ones_
-[**image of working device**]
+
+<img src="github-images/display.jpg" alt="Image of working display" width="504px" height="275px">
 
 
 ## Features
