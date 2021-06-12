@@ -3,6 +3,7 @@
 ##### _Send messages to family or loved ones_
 
 <img src="github-images/display.jpg" alt="Image of working display" width="504px" height="275px">
+_Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl)_
 
 
 ## Features
@@ -105,11 +106,13 @@
 - [IpInfo] - Turns IP addresses into latitude and longitude coordinates
 - [OpenWeatherMap] - Weather API
 - [weather-phat.py] - Code pieces and icons from the weather application sample
+- [balenalabs/inkyshot] - 3D printed case files
 
 
    [weather-phat.py]: <https://github.com/pimoroni/inky/blob/master/examples/phat/weather-phat.py>
    [IpInfo]: <https://ipinfo.io/>
    [OpenWeatherMap]: <https://openweathermap.org/api>
+   [balenalabs/inkyshot]: <https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl>
 
 
 ## Donate
