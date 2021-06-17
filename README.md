@@ -145,4 +145,4 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
 
 ## Donate
 <img src="github-images/eth_donate.png" alt="0xbb5f5d978acbde2ec79736cc5398768a35665d42">
-Ethereum: 0xbb5f5d978acbde2ec79736cc5398768a35665d42
+Ethereum: `0xbb5f5d978acbde2ec79736cc5398768a35665d42`
