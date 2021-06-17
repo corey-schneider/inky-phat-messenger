@@ -7,6 +7,16 @@
 _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl)_
 
 
+#### Table of Contents
+  * [Features](#features)
+  * [Hardware](#hardware)
+  * [Setup](#setup)
+  * [To do](#todo)
+  * [Troubleshooting](#troubleshooting)
+  * [Credits](#credits)
+
+---
+
 ## Features
 - Send an ~~email~~ ... ~~text message~~ ... **Discord message** to update the message on the inky phat
   - _Ran into some trouble with different mail servers having different ways of handling message bodies. The Discord bot is cleaner, more stable, and more practical as it can be accessed on [iOS](https://apps.apple.com/us/app/discord-talk-chat-hang-out/id985746746), [Android](https://play.google.com/store/apps/details?id=com.discord&hl=en_US&gl=US), [Windows, Linux, MacOS, Chrome OS, etc.](https://discord.com/)_
@@ -27,6 +37,19 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
   - `!shutdown` - Turns off the Raspberry Pi
   - `any text here` - Sends a message. Usage: `Hello!` will show `Hello!` on the display
 
+## Hardware
+- [Raspberry Pi Zero W](https://amzn.to/3q9JLCk) ($17) or [Zero WH](https://amzn.to/2TCGAa7) ($23) with pre-soldered headers // _[Adafruit link (14)](https://www.adafruit.com/product/3708)_
+  - [Break-away 2x20-pin GPIO headers](https://amzn.to/3gt1Mbn) ($5) // _[Adafruit link ($0.95)](https://www.adafruit.com/product/2822)_
+  - [Power supply and cable - 5v 3A](https://amzn.to/3iNUnVU) ($7) // _[Adafruit link ($7.50)](https://www.adafruit.com/product/1995)_
+- [Pimoroni Inky pHat](https://amzn.to/35AH4jr) ($32.80) // _[Adafruit link ($25)](https://www.adafruit.com/product/3934)_
+- [8GB microSD card](https://amzn.to/3wz1ipS) ($5.50)
+- [3D printed case](https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl) (free)
+- [Micro USB to DIP adapter](https://amzn.to/2S8JT8A) ($4.50)
+- [Soldering gun](https://amzn.to/3q0cx8a) ($12) (for the headers and USB DIP adapter)
+  - Above link includes the necessary items:
+    - Flux paste
+    - Solder wire
+- [~22 AWG wire](https://amzn.to/3gIcxW6) ($5) (or salvage from something lying around)
 
 ## Setup
 - Download [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/operating-systems/)
