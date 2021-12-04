@@ -14,6 +14,7 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
   * [To do](#todo)
   * [Troubleshooting](#troubleshooting)
   * [Credits](#credits)
+  * [Coffee?](#coffee)
 
 ---
 
@@ -68,15 +69,16 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
 - Create a new (free) account with [OpenWeatherMap.org](https://home.openweathermap.org/users/sign_up).
   - Sign in, click your name in the top right, click `My API keys` and copy the Key to [config/config.json](config/config.json)
 - Create Discord bot:
-  - Create a Discord account or sign in to your existing account and head to [https://discord.com/developers/applications](https://discord.com/developers/applications)
-  - Click `New Application` in the top right and name it `inky`
-  - Click `Bot` on the left column and then `Add Bot` on the right
-  - Copy your `TOKEN` and be sure not to share it with anyone. Paste it in `config/config.json` in `discord > token`.
-    - You may also enter your discord handle there too. _Be sure to include your hash tag and numbers._ This will act as a whitelist, only messages from `discord > allowed_user` will change the message on the inky phat, but you may also leave it blank to allow anyone in the server to change the message
-  - Click `OAuth2` on the left column. Under `SCOPES`, check `bot`. Under `BOT PERMISSIONS`, check `Send Messages`, `Manage Messages`, `Read Message History`
-  - Copy the link at the bottom of `SCOPES` - it should end with `&scope=bot` - but don't yet go to it
-  - Create a new Discord server and name it whatever you'd like, then visit the link copied in the last step and select the server you've just created
+  - Create a Discord account or sign in to your existing account
+  - Create a new server, name it whatever you'd like
     - You may want to create a server icon - there is a Raspberry Pi icon that can be found [here](github-images/rpi-logo.png)
+  - Head to [https://discord.com/developers/applications](https://discord.com/developers/applications)
+  - Click `New Application` in the top right and name it `inky` (or whatever you'd like)
+  - Click `Bot` on the left column and then `Add Bot` on the right
+  - Copy your `TOKEN` and be sure not to share it with anyone. Paste it in `config/config.json` under `discord > token`
+    - You may also enter your discord handle there too. _Be sure to include your hash tag and numbers._ This will act as a whitelist, only messages from `discord > allowed_user` will change the message on the inky phat, but you may also leave it blank to allow anyone in the server to change the message
+  - Click `OAuth2` in the left column. Select the dropdown `URL Generator`, check `bot` under the `SCOPES` section. Under `BOT PERMISSIONS`, check `Send Messages`, `Manage Messages`, `Read Message History`
+  - You should now see a link at the bottom of `SCOPES` ending with `&scope=bot` - visit this link. It should ask which server you'd like to attach the bot to - select the server made in the 2nd step
 - After testing to make sure everything is working, we need to make sure `discordbot.py` runs on startup and `display.py` runs every hour to update the weather
   - Run `crontab -e`. Type `1` if prompted to select an editor
   - At the bottom of the file, enter these two lines:
@@ -116,6 +118,7 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
 - `paragraph = textwrap.wrap(message, width=24)` 24 cuts off, may need to lower to 23 - do some testing
 - Create method for saving to json
   - "Send your first message via discord" doesn't save to configuration file
+- Add automatic wifi and automate the setup
 
 
 ## Troubleshooting
@@ -143,7 +146,7 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
    [balenalabs/inkyshot]: <https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl>
 
 
-## Donate
+## Coffee?
 <img src="github-images/eth_donate.png" alt="0xbb5f5d978acbde2ec79736cc5398768a35665d42">
 
 Ethereum: `0xbb5f5d978acbde2ec79736cc5398768a35665d42`
