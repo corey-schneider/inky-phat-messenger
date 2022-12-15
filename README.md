@@ -1,6 +1,6 @@
 # Inky Messenger 
 
-##### _Send messages to family or loved ones_
+##### _Send messages (and show hourly weather) to family or loved ones_
 
 <img src="github-images/display.jpg" alt="Image of working display" width="504px" height="275px">
 
@@ -11,10 +11,9 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
   * [Features](#features)
   * [Hardware](#hardware)
   * [Setup](#setup)
-  * [To do](#todo)
   * [Troubleshooting](#troubleshooting)
+  * [To do](#todo)
   * [Credits](#credits)
-  * [Coffee?](#coffee)
 
 ---
 
@@ -39,10 +38,10 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
   - `any text here` - Sends a message. Usage: `Hello!` will show `Hello!` on the display
 
 ## Hardware
-- [Raspberry Pi Zero W](https://amzn.to/3q9JLCk) ($17) or [Zero WH](https://amzn.to/2TCGAa7) ($23) with pre-soldered headers // _[Adafruit link](https://www.adafruit.com/product/3708) ($14)_
-  - [Break-away 2x20-pin GPIO headers](https://amzn.to/3gt1Mbn) ($5) // _[Adafruit link](https://www.adafruit.com/product/2822) ($0.95)_
-  - [Power supply and cable - 5v 3A](https://amzn.to/3iNUnVU) ($7) // _[Adafruit link](https://www.adafruit.com/product/1995) ($7.50)_
-- [Pimoroni Inky pHat](https://amzn.to/35AH4jr) ($32.80) // _[Adafruit link](https://www.adafruit.com/product/3934) ($25)_
+-  [Raspberry Pi Zero W with pre-soldered headers](https://www.adafruit.com/product/3708) ($14)
+  - [Break-away 2x20-pin GPIO headers](https://www.adafruit.com/product/2822) ($0.95)
+  - [Power supply and cable - 5V 2.5A](https://www.adafruit.com/product/1995) ($8.25)
+- [Pimoroni Inky pHat](https://www.adafruit.com/product/3934) ($25)
 - [8GB microSD card](https://amzn.to/3wz1ipS) ($5.50)
 - [3D printed case](https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl) (free stl; about $5 to print)
 - [Micro USB to DIP adapter](https://amzn.to/2S8JT8A) ($4.50)
@@ -53,19 +52,22 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
 - [~22 AWG wire](https://amzn.to/3gIcxW6) ($5) (or salvage from something lying around)
 
 ## Setup
+### 1. Setting up the Pi
 - Download [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/operating-systems/)
 - Flash image to SD card with [Raspberry Pi imager](https://www.raspberrypi.org/software/). While this is happening...
   - Download [wpa_supplicant.conf](wpa_supplicant.conf) and [ssh](ssh)
   - Modify [wpa_supplicant.conf](wpa_supplicant.conf) to include your wifi credentials
 - Safely remove and reinsert the microSD card you just flashed
 - Put YOUR modified version of `wpa_supplicant.conf` and `ssh` directly onto the root directory of the microSD card
-- Insert microSD, plug in the Pi, and SSH into it
+- Insert microSD, boot up the Pi, and SSH into it
 - Download the necessary files through `curl https://get.pimoroni.com/inky | bash`
-- Enable SPI and I2C. To do this, run `sudo raspi-config`, scroll to Interface Options, and enable them.
+- Enable SPI and I2C. _To do this, run `sudo raspi-config`, scroll to Interface Options, and enable them._
   - While in `raspi-config`, change the time zone _(unless you live in the UK)_. Select `Localisation Options` > `Timezone`.
 - Run `sudo apt-get update` and `sudo apt-get upgrade` - _This will take a while_
 - Run `python3 -m pip install --upgrade pip` and `python3 -m pip install --upgrade Pillow` and `python3 -m pip install discord`
 - Run `cd ~` and `git clone https://github.com/corey-schneider/inky-phat-messenger.git` and `cd inky-phat-messenger`
+
+### 2. Setting up OpenWeatherMap and Discord
 - Create a new (free) account with [OpenWeatherMap.org](https://home.openweathermap.org/users/sign_up).
   - Sign in, click your name in the top right, click `My API keys` and copy the Key to [config/config.json](config/config.json)
 - Create Discord bot:
@@ -79,6 +81,8 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
     - You may also enter your discord handle there too. _Be sure to include your hash tag and numbers._ This will act as a whitelist, only messages from `discord > allowed_user` will change the message on the inky phat, but you may also leave it blank to allow anyone in the server to change the message
   - Click `OAuth2` in the left column. Select the dropdown `URL Generator`, check `bot` under the `SCOPES` section. Under `BOT PERMISSIONS`, check `Send Messages`, `Manage Messages`, `Read Message History`
   - You should now see a link at the bottom of `SCOPES` ending with `&scope=bot` - visit this link. It should ask which server you'd like to attach the bot to - select the server made in the 2nd step
+  
+### 3. Final touches
 - After testing to make sure everything is working, we need to make sure `discordbot.py` runs on startup and `display.py` runs every hour to update the weather
   - Run `crontab -e`. Type `1` if prompted to select an editor
   - At the bottom of the file, enter these two lines:
@@ -86,10 +90,21 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
     - `@hourly cd /home/pi/inky-phat-messenger && python3 /home/pi/inky-phat-messenger/display.py`
   - hit `ctrl o`, enter, then `ctrl x`
 
+### That's it!
+#### If you need help, feel free to open a [new discussion](https://github.com/corey-schneider/inky-phat-messenger/discussions) in this repo.
+
+## Troubleshooting
+- If you see an error saying `File "/home/pi/.local/lib/python3.7/site-packages/PIL/Image.py", line 109, in <module>` or something about `from . import _imaging as core`...
+  - Run `sudo rm -rf /home/pi/.local/lib/python3.7/site-packages/PIL/`. If the error persists, notice the directory - you may see `python3.8` or similar - change the `rm -rf` command to the version seen in your error.
+- If the Discord bot is showing as offline on the Discord server...
+  - Check the connection of the raspberry pi - make sure you can ssh into it
+  - Make sure the token is correct and placed in `config/config.json`
+  - Check the `log.txt` for an error message from discordbot
+- If the Discord bot is not responding, the bot is likely offline and needs to be restarted
+- If the Discord bot is saying you're not authorized, make sure you entered your name correctly in `config/config.json`. It should look similar to this: `"allowed_user": "tester#1234"`. _Reminder that this is NOT the bot's name; it is YOUR personal account's name_
+
 
 ## TODO
-- Clean up README.md
-  - Organize `SETUP` into sections
 - Use PIL to create a mockup image of the display and have the bot send it over Discord
 - Clean up code in `display.py`
   - Separate code into methods and classes
@@ -108,29 +123,17 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
   - enable / disable bottom frame
   - !help command to show all commands
 - Have error messages routed to Discord bot
-- Set up alerts on Discord bot
-  - Enter the pi holder's Discord handle and alert them when a new message arrives on the inky display
+- Set up optional alerts to recipient on Discord bot
+  - Enter the recipient's Discord handle and alert them when a new message arrives on the inky display
 - Add more weather icons
   - Hopefully remove the ugly bump too
-  - [Climacons](https://thenounproject.com/adamwhitcroft/collection/climacons/) are really nice!
+  - [Climacons](https://thenounproject.com/adamwhitcroft/collection/climacons/) are really nice
 - Finer detailed weather
 - Have discord bot be aware of length of message and reject a message that will overflow off the screen
 - `paragraph = textwrap.wrap(message, width=24)` 24 cuts off, may need to lower to 23 - do some testing
 - Create method for saving to json
   - "Send your first message via discord" doesn't save to configuration file
 - Add automatic wifi and automate the setup
-
-
-## Troubleshooting
-- If you see an error saying `File "/home/pi/.local/lib/python3.7/site-packages/PIL/Image.py", line 109, in <module>` or something about `from . import _imaging as core`...
-  - Run `sudo rm -rf /home/pi/.local/lib/python3.7/site-packages/PIL/`. If the error persists, notice the directory - you may see `python3.8` or similar - change the `rm -rf` command to the version seen in your error.
-- If the Discord bot is showing as offline on the Discord server...
-  - Check the connection of the raspberry pi - make sure you can ssh into it
-  - Make sure the token is correct and placed in `config/config.json`
-  - Check the `log.txt` for an error message from discordbot
-- If the Discord bot is not responding, the bot is likely offline and needs to be restarted
-- If the Discord bot is saying you're not authorized, make sure you entered your name correctly in `config/config.json`. It should look similar to this: `"allowed_user": "tester#1234"`. _Reminder that this is NOT the bot's name; it is YOUR personal account's name_
-
 
 
 ## Credits
@@ -146,7 +149,7 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
    [balenalabs/inkyshot]: <https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl>
 
 
-## Coffee?
+## 🍻
 <img src="github-images/eth_donate.png" alt="0xbb5f5d978acbde2ec79736cc5398768a35665d42">
 
 Ethereum: `0xbb5f5d978acbde2ec79736cc5398768a35665d42`
