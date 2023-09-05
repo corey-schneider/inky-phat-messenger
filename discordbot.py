@@ -13,7 +13,9 @@ import os
 
 '''
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
 
 #logging.basicConfig(filename = 'log.txt', format='%(asctime)s [%(name)s]: %(message)s', level=logging.INFO) #log.txt: time [discordbot]: message
 #logging.getLogger().addHandler(logging.StreamHandler()) #print to console
@@ -38,7 +40,7 @@ except (JSONDecodeError, KeyError):
 
 @client.event
 async def on_ready():
-	print('We have logged in as {0.user}'.format(client))
+	print('Logged in as {0.user}'.format(client))
 
 @client.event
 async def on_message(message):
