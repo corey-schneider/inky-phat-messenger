@@ -6,6 +6,7 @@
 
 _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balenalabs/inkyshot/tree/master/assets/case-design2-rear-usb/stl)_
 
+_Have questions? Feel free to open a [new discussion](https://github.com/corey-schneider/inky-phat-messenger/discussions) in this repo_
 
 #### Table of Contents
   * [Features](#features)
@@ -79,6 +80,10 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
   - Click `Bot` on the left column and then `Reset Token` on the right
   - Copy your `TOKEN` and be sure not to share it with anyone. Paste it in `config/config.json` under `discord > token`
     - You may also enter your discord handle there too. _Be sure to include your hash tag and numbers._ This will act as a whitelist, only messages from `discord > allowed_user` will change the message on the inky phat, but you may also leave it blank to allow anyone in the server to change the message
+  - Still in the `Bot` section, scroll down to the *Privileged Gateway Intents* section. Enable the following 3 toggles:
+    - `PRESENCE INTENT`
+    - `SERVER MEMBERS INTENT`
+    - `MESSAGE CONTENT INTENT`
   - Click `OAuth2` in the left column. Select the dropdown `URL Generator`, check `bot` under the `SCOPES` section. Under `BOT PERMISSIONS`, check `Send Messages`, `Manage Messages`, `Read Message History`
   - You should now see a link at the bottom of `SCOPES` ending with `&scope=bot` - visit this link. It should ask which server you'd like to attach the bot to - select the server made in the 2nd step
   
