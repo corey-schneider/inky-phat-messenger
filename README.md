@@ -76,7 +76,7 @@ _Like the case? Get it from [balenalabs' inkyshot repo](https://github.com/balen
     - You may want to create a server icon - there is a Raspberry Pi icon that can be found [here](github-images/rpi-logo.png)
   - Head to [https://discord.com/developers/applications](https://discord.com/developers/applications)
   - Click `New Application` in the top right and name it `inky` (or whatever you'd like)
-  - Click `Bot` on the left column and then `Add Bot` on the right
+  - Click `Bot` on the left column and then `Reset Token` on the right
   - Copy your `TOKEN` and be sure not to share it with anyone. Paste it in `config/config.json` under `discord > token`
     - You may also enter your discord handle there too. _Be sure to include your hash tag and numbers._ This will act as a whitelist, only messages from `discord > allowed_user` will change the message on the inky phat, but you may also leave it blank to allow anyone in the server to change the message
   - Click `OAuth2` in the left column. Select the dropdown `URL Generator`, check `bot` under the `SCOPES` section. Under `BOT PERMISSIONS`, check `Send Messages`, `Manage Messages`, `Read Message History`
